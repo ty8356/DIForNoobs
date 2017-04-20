@@ -1,0 +1,10 @@
+{
+  "generator-reveal": {
+    "presentationTitle": "DIForNoobs",
+    "packageVersion": "0.0.0",
+    "useSass": true,
+    "deployToGithubPages": true,
+    "githubUsername": "ty8356",
+    "githubRepository": "DIForNoobs"
+  }
+}
