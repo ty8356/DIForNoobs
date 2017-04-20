@@ -97,10 +97,11 @@ module.exports = (grunt) ->
                 commit: true
                 push: true
                 message: 'Built from %sourceCommit% on branch %sourceBranch%'
+                force: true
             pages:
                 options:
                     remote: 'https://github.com/ty8356/DIForNoobs.git'
-                    branch: 'master'
+                    branch: 'gh-pages'
         
 
 
