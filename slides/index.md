@@ -1,10 +1,4 @@
 
-# DIForNoobs
-
-From the terminal, pop in:
-
-  ```yo reveal:slide "Slide Title"```
-
-Available options:
-
- ```--markdown --attributes --notes```
+### Dependency Injection For Noobs
+---
+Tyler Stephenson
