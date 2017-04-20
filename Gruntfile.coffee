@@ -99,7 +99,7 @@ module.exports = (grunt) ->
                 message: 'Built from %sourceCommit% on branch %sourceBranch%'
             pages:
                 options:
-                    remote: '<%= pkg.repository.url %>'
+                    remote: 'https://github.com/ty8356/DIForNoobs.git'
                     branch: 'gh-pages'
         
 
