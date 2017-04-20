@@ -98,6 +98,7 @@ module.exports = (grunt) ->
                 push: true
                 message: 'Built from %sourceCommit% on branch %sourceBranch%'
                 force: true
+                connectCommits: false
             pages:
                 options:
                     remote: 'https://github.com/ty8356/DIForNoobs.git'
