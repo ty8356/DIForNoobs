@@ -94,14 +94,13 @@ module.exports = (grunt) ->
 
             options:
                 dir: 'dist'
-                connectCommits: false
                 commit: true
                 push: true
                 message: 'Built from %sourceCommit% on branch %sourceBranch%'
             pages:
                 options:
                     remote: 'https://github.com/ty8356/DIForNoobs.git'
-                    branch: 'gh-pages'
+                    branch: 'master'
         
 
 
