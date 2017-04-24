@@ -1,23 +1,29 @@
 [
     "index.md",
     [
-        "about-01.md",
-        "about-02.md",
-        "about-03.md"
+        "about/about-01.md",
+        "about/about-02.md",
+        "about/about-03.md"
     ],
     [
-        "intro-01.md",
-        "intro-02.md",
-        "intro-03.md",
-        "intro-04.md"
+        "intro/intro-01.md",
+        "intro/intro-02.md",
+        "intro/intro-03.md",
+        "intro/intro-04.md"
     ],
     [
-        "di-01.md",
-        "di-02.md",
-        "di-03.md"
+        "di/di-01.md",
+        "di/di-02.md",
+        "di/di-03.md",
+        "di/di-04.md"
     ],
     [
-        "coupling-01.md",
-        "coupling-02.md"
+        "coupling/coupling-01.md",
+        "coupling/coupling-02.md",
+        "coupling/coupling-03.md",
+        "coupling/coupling-04.md"
+    ],
+    [
+        "patterns/patterns-01.md"
     ]
 ]
