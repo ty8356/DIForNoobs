@@ -1,1 +1,1 @@
-This is the main purpose of DI.
+Program to an interface, not an implementation.

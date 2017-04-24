@@ -15,15 +15,21 @@
         "di/di-01.md",
         "di/di-02.md",
         "di/di-03.md",
-        "di/di-04.md"
-    ],
-    [
+        "di/di-04.md",
         "coupling/coupling-01.md",
         "coupling/coupling-02.md",
         "coupling/coupling-03.md",
-        "coupling/coupling-04.md"
+        "coupling/coupling-04.md",
+        "coupling/coupling-05.md"
     ],
     [
-        "patterns/patterns-01.md"
+        "inDepth/inDepth-01.md",
+        "inDepth/inDepth-02.md",
+        "inDepth/inDepth-03.md",
+        "inDepth/inDepth-04.md",
+        "inDepth/inDepth-05.md",
+        "inDepth/inDepth-06.md",
+        "inDepth/inDepth-07.md",
+        "inDepth/inDepth-08.md"
     ]
 ]
