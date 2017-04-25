@@ -9,8 +9,8 @@ gulp.task('sass', function() {
     return gulp.src("app/scss/**/*.scss")
         .pipe(sass())
         .pipe(gulp.dest("app/css"))
-        .pipe(browserSync.reload({ stream: true }))
-})
+        .pipe(browserSync.reload({ stream: true }));
+});
 
 gulp.task('reveal', function() {
     gulp.src('node_modules/reveal.js/css/**/*')
@@ -25,7 +25,7 @@ gulp.task('reveal', function() {
     gulp.src('node_modules/reveal.js/plugin/**/*')
         .pipe(gulp.dest('app/reveal/plugin'))  
         .pipe(gulp.dest('dist/reveal/plugin'));
-})
+});
 
 gulp.task('browserSync', function() {
     browserSync.init({
@@ -33,42 +33,42 @@ gulp.task('browserSync', function() {
             baseDir: "app"
         }
     });
-})
+});
 
 gulp.task('clean:dist', function() {
     return del.sync(['dist/**', '!dist']);
-})
+});
 
 gulp.task('copy', function() {
     return gulp.src('app/**/*')
         .pipe(gulp.dest('dist'));
-})
+});
 
 gulp.task('deploy', function () {
   return gulp.src("./dist/**/*")
-    .pipe(deploy())
-})
+    .pipe(deploy());
+});
 
 gulp.task('publish', function() {
     runSequence(
         'clean:dist',
         'copy',
-        'deploy')
-})
+        'deploy');
+});
 
 gulp.task('build', function(callback) {
     runSequence(
         'clean:dist',
         'sass',
         'reveal',
-        callback)
-})
+        callback);
+});
 
 gulp.task('watch', ['browserSync', 'sass'], function() {
     gulp.watch('app/scss/**/*.scss', ['sass']);
     gulp.watch('app/ts/**/*.ts', ['typescript']);
     gulp.watch('app/*.html', browserSync.reload);
     gulp.watch('app/js/**/*.js', browserSync.reload);
-})
+});
 
-gulp.task('default', ['build', 'watch'])
+gulp.task('default', ['build', 'watch']);
