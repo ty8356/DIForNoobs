@@ -1,1 +1,0 @@
-Program to an interface, not an implementation.

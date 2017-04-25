@@ -1,28 +1,24 @@
 {
   "name": "difornoobs",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "Presentation for Code PaLOUsa 2017.",
   "devDependencies": {
-    "bower": "^1.8.0",
-    "coffeelint": "^1.16.0",
-    "grunt": "^1.0.0",
-    "grunt-build-control": "^0.7.1",
-    "grunt-coffeelint": "0.0.16",
-    "grunt-contrib-connect": "^1.0.2",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-jshint": "^1.1.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-sass": "^2.0.0",
-    "load-grunt-tasks": "^3.5.2"
-  },
-  "engines": {
-    "node": ">=4"
+    "browser-sync": "^2.18.8",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-cli": "^1.3.0",
+    "gulp-git": "^2.2.0",
+    "gulp-sass": "^3.1.0",
+    "run-sequence": "^1.2.2"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:ty8356/DIForNoobs.git"
+    "url": "git+https://github.com/ty8356/DIForNoobs.git"
   },
-  "scripts": {
-    "test": "grunt test"
-  }
+  "author": "Tyler Stephenson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ty8356/DIForNoobs/issues"
+  },
+  "homepage": "https://github.com/ty8356/DIForNoobs#readme"
 }
