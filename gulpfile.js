@@ -3,7 +3,7 @@ var sass = require('gulp-sass');
 var browserSync = require('browser-sync').create();
 var del = require('del');
 var runSequence = require('run-sequence');
-var git = require('gulp-git');
+var deploy = require('gulp-gh-pages');
 
 gulp.task('sass', function() {
     return gulp.src("app/scss/**/*.scss")
@@ -35,22 +35,6 @@ gulp.task('browserSync', function() {
     });
 })
 
-gulp.task('add', function(){
-  return gulp.src('./dist/*')
-    .pipe(git.add());
-})
-
-gulp.task('commit', function(){
-  return gulp.src('./dist/*')
-    .pipe(git.commit('push to gh-pages'));
-})
-
-gulp.task('push', function(){
-  git.push('https://github.com/ty8356/DIForNoobs.git', 'gh-pages', {args: " "}, function (err) {
-    if (err) throw err;
-  });
-})
-
 gulp.task('clean:dist', function() {
     return del.sync(['dist/**', '!dist']);
 })
@@ -60,8 +44,16 @@ gulp.task('copy', function() {
         .pipe(gulp.dest('dist'));
 })
 
-gulp.task('publish', function() {
+gulp.task('deploy', function () {
+  return gulp.src("./dist/**/*")
+    .pipe(deploy())
+})
 
+gulp.task('publish', function() {
+    runSequence(
+        'clean:dist',
+        'copy',
+        'deploy')
 })
 
 gulp.task('build', function(callback) {
@@ -77,16 +69,6 @@ gulp.task('watch', ['browserSync', 'sass'], function() {
     gulp.watch('app/ts/**/*.ts', ['typescript']);
     gulp.watch('app/*.html', browserSync.reload);
     gulp.watch('app/js/**/*.js', browserSync.reload);
-})
-
-gulp.task('deploy', function(callback) {
-    runSequence(
-        'clean:dist',
-        'copy',
-        'add',
-        'commit',
-        'push',
-        callback);
 })
 
 gulp.task('default', ['build', 'watch'])
