@@ -1,0 +1,1 @@
+A **DI Container** is an optional library that can make it easier for us to compose components when we wire up an application.
