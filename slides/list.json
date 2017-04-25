@@ -23,13 +23,19 @@
         "coupling/coupling-05.md"
     ],
     [
-        "inDepth/inDepth-01.md",
-        "inDepth/inDepth-02.md",
-        "inDepth/inDepth-03.md",
-        "inDepth/inDepth-04.md",
-        "inDepth/inDepth-05.md",
-        "inDepth/inDepth-06.md",
-        "inDepth/inDepth-07.md",
-        "inDepth/inDepth-08.md"
+        "closer/closer-01.md",
+        "closer/closer-02.md",
+        "closer/closer-03.md",
+        "closer/closer-04.md",
+        "closer/closer-05.md"
+    ],
+    [
+        "when/when-01.md"
+    ],
+    [
+        "frameworks/frameworks-01.md"
+    ],
+    [
+        "questions/questions-01.md"
     ]
 ]
