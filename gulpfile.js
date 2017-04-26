@@ -59,6 +59,7 @@ gulp.task('publish', function() {
 gulp.task('build', function(callback) {
     runSequence(
         'clean:dist',
+        'copy',
         'sass',
         'reveal',
         callback);

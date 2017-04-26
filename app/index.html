@@ -37,8 +37,11 @@
                             <br/>
                             <br/>
                             <br/>
-                            Programming for almost two years (September 2015)
+                            Programming for almost two years
                         </p>
+                        <aside class="notes">
+                            (September 2015)
+                        </aside>
                     </section>
                     <section>
                         <b>Find me on Twitter!</b><br/>
@@ -148,10 +151,24 @@
 
                 <section>
                     <section>
-                        Okay, so <b>how</b> am I supposed to use this??
+                        <b>When</b> am I supposed to use DI?
                     </section>
                     <section>
-                        Most of the time, with a DI Container...
+                        You should use DI when...
+                    </section>
+                    <section>
+                        You want your application to be loosley coupled.<br/>
+                        <span class="fragment">You want use TTD, or write unit tests in general.</span><br/>
+                        <span class="fragment">You want your code to be reusable and versatile.</span>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        Okay, so <b>how</b> am I supposed to use DI?
+                    </section>
+                    <section>
+                        Most of the time, with a Dependency Injection or Inversion of Control Container...
                     </section>
                     <section>
                         A <b>DI Container</b> is an optional library that can make it easier for us to compose components when we wire up an application.
@@ -168,11 +185,41 @@
                     <section>
                         Containers just make the process easier.
                     </section>
+                    <section>
+                        There are plenty of DI Containers out there, but the most common are... 
+                    </section>
+                    <section>
+                        StructureMap<br/>
+                        <span class="fragment">Castle Windsor</span><br/>
+                        <span class="fragment">Spring.NET</span><br/>
+                        <span class="fragment">Autofac</span><br/>
+                        <span class="fragment">Unity</span>
+                    </section>
                 </section>
 
                 <section>
                     <section>
-                        Are there any tools that can help me along the way?
+                        So how do I implement a DI Container?
+                    </section>
+                    <section>
+                        It starts with some configuration.
+                    </section>
+                    <section>
+                        There are a few ways to configure your DI container...
+                    </section>
+                    <section>
+                        XML<br/>
+                        <span class="fragment">Code as Configuration</span><br/>
+                        <span class="fragment">Auto-Registration</span>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        Let's take a look at a couple common DI Containers...
+                    </section>
+                    <section>
+                        We'll start out looking at StructureMap.
                     </section>
                 </section>
 
