@@ -21,12 +21,12 @@
 		<div class="reveal" style="font-size: 38px;">
 			<div class="slides">
 
-				<section>
+                <section>
                     <h3>Dependency Injection for Noobs</h3>
                     <hr/>
-                    <p>Tyler Stephenson</p>
-				</section>
-
+                    Tyler Stephenson
+                </section>
+                
                 <section>
                     <section>
                         <b>About Me</b>
@@ -54,7 +54,7 @@
                         Let's get to the good stuff...
                     </section>
                     <section>
-                        So my boss told me to learn about <b>dependency injection</b> because it allows for more <b>decoupled code</b>...
+                        So my boss told me to learn about <b>Dependency Injection</b> because it allows for more <b>decoupled code</b>...
                     </section>
                     <section>
                         <p>Why the heck would I want to do that???
@@ -63,170 +63,270 @@
                         <div class="fragment">And what is Dependency Injection anyway???</div></p>
                     </section>
                     <section>
-                        Well...
+                        This presentation will be directed specifically at Dependency Injection in .NET using C#, but you can take these ideas and use them in most other frameworks and languages.
+                    </section>
+                    <section>
+                        Before we get into answering the specifics, we should take a few steps back.
                     </section>
                 </section>
 
                 <section>
                     <section>
-                        Let's start off with an overview of Dependency Injection...
+                        Let's start off with the <b>problem</b> and where it stems from...
                     </section>
                     <section>
-                        <b>Dependency Injection</b> is a set of software design principles and patterns that allow us to write <b>loosely coupled</b> code.
+                        It's generally accepted that programming to an <b>interface</b> is a good practice to get into.
                     </section>
                     <section>
-                        Collaborating classes should rely on the <b>infrastructure</b> to provide the necessary services.
-                        <aside class="notes">
-                            On Stack Overflow, there's a question called "How to explain Dependency Injection to a 5-year old". 
-                            The best answer is provided by one John Munsch and states, When you go and get things out of the 
-                            refrigerator for yourself, you can cause problems. You might leave the door open, you might get 
-                            something Mommy or Daddy doesn't want you to have. You might even be looking for something we don't 
-                            even have or which is expired. What you should be doing is stating a need, "I need something to 
-                            drink with lunch," and then we will make sure you have something when you sit down to eat.
-                        </aside>
+                        This allows you to swap classes in and out based on the situation without breaking anything within the application.
                     </section>
                     <section>
-                        DI enables <b>loose coupling</b> and loose coupling makes code more <b>maintainable</b>.
+                        As long as the class meets the <b>requirements</b> of the interface and the functions return the expected results, everything just works.
                     </section>
                     <section>
-                        <b>Loosely coupled code</b> is code that has been developed so one end can be easily changed without changing the other.
+                        Let's take a look at an example...
                     </section>
                     <section>
-                        <p><b>Liskov Substitution Principle</b></p>
-                        <p>We should be able to replace one implementation of an interface with another without breaking either client or implementation.</p>
+                        <pre><code data-trim data-noescape>
+                            public class Foo
+                            {
+                                public Foo(IDatabasePersister db) 
+                                {
+                                    // some code here
+                                }
+                            }    
+                        </code></pre>
+                        <pre><code data-trim data-noescape>
+                            public interface IDatabasePersister
+                            {
+                                Object GetItemById();
+                                void Create();
+                                void Read();
+                                void Update();
+                                void Delete();
+                            }    
+                        </code></pre>
                     </section>
                     <section>
-                        Program to an interface, not an implementation.
+                        Writing your application in this way allows you to use any type of data storage, as long as you write a class that conforms to the interface.
                     </section>
                     <section>
-                        This is the main purpose of DI.
-                    </section>
-                    <section>
-                        Allows us to address requirements that come up in the future.
-                        <aside class="notes">
-                            Example: Imagine a wall plug. If everything were wired directly to the wall, we wouldn't have the 
-                            ability to plug and unplug things from the wall at will. It would take a professional to come and 
-                            wire what we need into the wall. This is similar to tightly coupled code. But, if instead we have 
-                            the combination of plugs and sockets, we are able to plug and unplug anything we want with ease at 
-                            any time. This is similar to loosley coupled code. The socket represents an interface and the plug 
-                            represents the piece of code you're changing, so as long as the plug fits into the socket, everything 
-                            works.
-                        </aside>
+                        This is a <b>huge advantage</b>, especially when writing large business applications.
                     </section>
                 </section>
 
                 <section>
                     <section>
-                        A closer look...
+                        This structure, passing an interface to the constructor, is known as <b>Inversion of Control</b>, or <b>IoC</b>.
                     </section>
                     <section>
-                        The <b>benefits</b> of DI include...
+                        <b>Inversion of Control</b> is a software development technique in which you allow the person <b>calling</b> the class to select a concrete implementation type, as opposed to selecting one <b>yourself</b>.
                     </section>
                     <section>
-                        Late Binding<br/>
-                        <span class="fragment">Extensibility</span><br/>
-                        <span class="fragment">Parallel Development</span><br/>
-                        <span class="fragment">Maintainability</span><br/>
-                        <span class="fragment">Testability</span>
-                        <aside class="notes">
-                            Late Binding: The ability to replace parts of an application without recompiling. 
-                            Extensibility: The ability to change the application by adding new features or extending existing features. 
-                            Parallel Development: The ability to have multiple developers working on the same project simultaneously. 
-                            Maintainability: The ability to easily maintain and support the application. 
-                            Testability: The ability to easily write unit tests around an application.
-                        </aside>
+                        You're literally <b>inverting</b> the control.
                     </section>
                     <section>
-                        So what problems does DI really solve?
+                        Let's take a look at IoC in <b>code</b>...
                     </section>
                     <section>
-                        Object Composition<br/>
-                        <span class="fragment">Object Lifecycle</span><br/>
-                        <span class="fragment">Interception</span>
-                        <aside class="notes">
-                            Talk about each of these (add more in depth notes later)
-                        </aside>
+                        <pre><code data-trim data-noescape>
+                            public class Foo
+                            {
+                                public Foo(IDatabasePersister db) 
+                                {
+                                    // some code here
+                                }
+                            }   
+                        </code></pre>
+                        <pre><code data-trim data-noescape>
+                            public class Bar
+                            {
+                                public void DoStuff()
+                                {
+                                    var db = new Database();
+                                    var foo = new Foo(db);
+                                }
+                            }
+                        </code></pre>
+                        <span class="fragment">Notice that the <b>IDatabasePersister</b> interface is now a <b>dependency</b> of Foo.</span>
                     </section>
-                </section>
-
-                <section>
                     <section>
-                        <b>When</b> am I supposed to use DI?
+                        This is because you <b>must</b> pass an instance of <b>IDatabasePersister</b> through when calling the class.
                     </section>
                     <section>
-                        You should use DI when...
+                        This form of <b>IoC</b> is known as <B>Dependency Injection (DI)</b> because you are <b>injecting</b> the dependency into the class through the constructor.
                     </section>
                     <section>
-                        You want your application to be loosley coupled.<br/>
-                        <span class="fragment">You want use TTD, or write unit tests in general.</span><br/>
-                        <span class="fragment">You want your code to be reusable and versatile.</span>
+                        <b>Dependency Injection</b> is a set of software design principles and patterns that enable us to develop loosely couled code.
                     </section>
                 </section>
 
                 <section>
                     <section>
-                        Okay, so <b>how</b> am I supposed to use DI?
+                        So what's the <b>problem</b> with Inversion of Control using Dependency Injection?
                     </section>
                     <section>
-                        Most of the time, with a Dependency Injection or Inversion of Control Container...
+                        Well, when a class has <b>multiple dependencies</b>, things start to get pretty crazy...
                     </section>
                     <section>
-                        A <b>DI Container</b> is an optional library that can make it easier for us to compose components when we wire up an application.
+                        For example...
                     </section>
                     <section>
-                        A common misconception is that Dependency Injection <b>requires</b> a DI Container.
+                        So we've seen how to inject a single dependency into a class.
+                        <span class="fragment"><pre><code data-trim data-noescape>
+                            public class Foo 
+                            {
+                                public Foo(IDatabasePersister db)
+                                {
+                                    // code here
+                                }
+                            }
+                        </code></pre>
+                        <pre><code data-trim data-noescape>
+                            public class Bar
+                            {
+                                public void DoStuff()
+                                {
+                                    var db = new Database();
+                                    var foo = new Foo(db);
+                                }
+                            }
+                        </code></pre></span>
                     </section>
                     <section>
-                        This is <b>incorrect</b>.
+                        But what if there are two dependencies?
+                        <span class="fragment"><pre><code data-trim data-noescape>
+                            public class Foo 
+                            {
+                                public Foo(IDatabasePersister db, IProductService productService)
+                                {
+                                    // code here
+                                }
+                            }
+                        </code></pre>
+                        <pre><code data-trim data-noescape>
+                            public class Bar
+                            {
+                                public void DoStuff()
+                                {
+                                    var db = new Database();
+                                    var productService = new ProductService();
+                                    var foo = new Foo(db, productService);
+                                }
+                            }
+                        </code></pre></span>
                     </section>
                     <section>
-                        Although it's more difficult, "<b>Poor Man's DI</b>" can be implemented without a DI Container.
+                        Five?
+                        <span class="fragment"><pre><code data-trim data-noescape>
+                            public class Foo 
+                            {
+                                public Foo(IDatabasePersister db, IProductService productService, 
+                            ICartService cartService, IPriceService priceService, IDiscountService 
+                            discountService)
+                                {
+                                    // code here
+                                }
+                            }
+                        </code></pre>
+                        <pre><code data-trim data-noescape>
+                            public class Bar
+                            {
+                                public void DoStuff()
+                                {
+                                    var db = new Database();
+                                    var productService = new ProductService();
+                                    var cartService = new CartService();
+                                    var priceService = new PriceService();
+                                    var discountService = new DiscountService();
+                                    var foo = new Foo(db, productService, cartService, priceService, 
+                            discountService);
+                                }
+                            }
+                        </code></pre></span>
                     </section>
                     <section>
-                        Containers just make the process easier.
+                        And what if the <b>dependencies</b> have multiple <b>dependencies</b> of their own??
                     </section>
                     <section>
-                        There are plenty of DI Containers out there, but the most common are... 
+                        <pre><code data-trim data-noescape>
+                            public class ProductService : IProductService 
+                            {
+                                public ProductService(ICartService cartService, IPriceService 
+                            priceService, IDiscountService discountService)
+                                {
+                                    // code here
+                                }
+                            }
+                        </code></pre>
+                        <pre><code data-trim data-noescape>
+                            public class Foo 
+                            {
+                                public Foo(IDatabasePersister db, IProductService productService)
+                                {
+                                    // code here
+                                }
+                            }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            public class Bar
+                            {
+                                public void DoStuff()
+                                {
+                                    var cartService = new CartService();
+                                    var priceService = new PriceService();
+                                    var discountService = new DiscountService();
+                                    var productService = new ProductService(cartService, priceService,
+                            discountService);
+
+                                    var db = new Database();
+                                    var foo = new Foo(db, productService);
+                                }
+                            }
+                        </code></pre>
+                    </section>
+                    <section>
+                        As you can see, this can get extremely complex...
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        So what's the solution?
+                    </section>
+                    <section>
+                        Assuming you don't want to just grit your teeth and go at it the hard way, you can use something called a <b>DI Container</b>.
+                    </section>
+                    <section>
+                        A <b>DI Container</b> is a software library that provides DI functionality.
+                    </section>
+                    <section>
+                        As opposed to doing all the hard work yourself (<b>Poor Man's DI</b>), you can use a container that does it for you.
+                    </section>
+                    <section>
+                        In the .NET world, a lot of these DI Containers come through <b>Nuget packages</b>, so they're relatively easy to pull down and configure.
+                    </section>
+                    <section>
+                        A few of the most common DI Containers are...
                     </section>
                     <section>
                         StructureMap<br/>
                         <span class="fragment">Castle Windsor</span><br/>
                         <span class="fragment">Spring.NET</span><br/>
                         <span class="fragment">Autofac</span><br/>
+                        <span class="fragment">Ninject</span><br/>
                         <span class="fragment">Unity</span>
                     </section>
                 </section>
 
                 <section>
-                    <section>
-                        So how do I implement a DI Container?
-                    </section>
-                    <section>
-                        It starts with some configuration.
-                    </section>
-                    <section>
-                        There are a few ways to configure your DI container...
-                    </section>
-                    <section>
-                        XML<br/>
-                        <span class="fragment">Code as Configuration</span><br/>
-                        <span class="fragment">Auto-Registration</span>
-                    </section>
+                    How can I make <b>use</b> these DI Containers?
                 </section>
 
                 <section>
-                    <section>
-                        Let's take a look at a couple common DI Containers...
-                    </section>
-                    <section>
-                        We'll start out looking at StructureMap.
-                    </section>
-                </section>
-
-                <section>
-                    <section>
-                        Questions
-                    </section>
+                    Questions
                 </section>
 
 			</div>
