@@ -306,7 +306,7 @@
                         As opposed to doing all the hard work yourself (<b>Poor Man's DI</b>), you can use a container that does it for you.
                     </section>
                     <section>
-                        In the .NET world, a lot of these DI Containers come through <b>Nuget packages</b>, so they're relatively easy to pull down and configure.
+                        In the .NET world, a lot of these containers come through <b>Nuget packages</b>, so they're relatively easy to pull down and configure.
                     </section>
                     <section>
                         A few of the most common DI Containers are...
@@ -323,10 +323,208 @@
 
                 <section>
                     <section>
-                        How can I make <b>use</b> of these DI Containers?    
+                        How do I <b>implement</b> these containers??
                     </section>
                     <section>
-                        
+                        Let's step through how to use a couple...
+                    </section>
+                    <section>
+                        Before we begin, let's establish a starting point.
+                    </section>
+                    <section>
+                        I'll be demonstrating this through an MVC Web Application using Visual Studio 2017.
+                    </section>
+                    <section>
+                        So we have a solution in Visual Studio with two projects.<br/>
+                        <span class="fragment"><b>Web</b>, the MVC project...</span><br/>
+                        <span class="fragment">and <b>Data</b>, a C# class library.</span>
+                    </section>
+                    <section>
+                        In the <b>Data</b> project, there's a interface called <b>IFooService</b> and a class that inherits it called <b>FooService</b>.
+                        <span class="fragment"><pre><code data-trim data-noescape>
+                            public interface IFooService
+                            {
+                                string SayHello();
+                            }
+                        </code></pre>
+                        <pre><code data-trim data-noescape>
+                            public class FooService : IFooService
+                            {
+                                public string SayHello()
+                                {
+                                    var message = "Hello from FooService!"
+                                    return message;
+                                }
+                            }
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        In the <b>Web</b> project, we have a controller called <b>BarController</b>, along with <b>BarViewModel</b> class and a view called <b>Bar</b>.
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            public class BarController : Controller
+                            {
+                                public ActionResult Index()
+                                {
+                                    var fooService = new Data.FooService();
+                                    var message = fooService.SayHello();
+                                    var viewModel = new BarViewModel {Message = message};
+
+                                    return View(viewModel);
+                                }
+                            }
+                        </code></pre>
+                        <pre><code data-trim data-noescape>
+                            public class BarViewModel
+                            {
+                                public string Message { get; set; }
+                            }
+                        </code></pre>
+                        <pre><code data-trim>
+                            @model BarViewModel
+
+                            <p>Message: @Model.Message</p>
+                        </code></pre>
+                    </section>
+                    <section>
+                        As you can see, <b>BarController</b> is newing up a FooService, giving it a dependency that can't be swapped out.
+                    </section>
+                    <section>
+                        So let's learn how to implement a couple DI containers to fix this.
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        First, let's take a look at Ninject.
+                    </section>
+                    <section>
+                        Explain and demonstrate Ninject here.
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        Now, let's look at StructureMap.
+                    </section>
+                    <section>
+                        First, you'll have to download the necessary Nuget packages.
+                    </section>
+                    <section>
+                        The Nuget packages we'll need are...
+                    </section>
+                    <section>
+                        StructureMap<br/>
+                        <span class="fragment">StructureMap.web</span><br/>
+                        <span class="fragment">StructureMap.MVC5.Update</span>
+                    </section>
+                    <section>
+                        Now for some configuration.
+                    </section>
+                    <section>
+                        StructureMap automatically adds a folder called 'DependencyResolution' in the root of your project.
+                    </section>
+                    <section>
+                        The most important class in here to get started is the DefaultRegistry class.<br/>
+                        <span class="fragment">This is where you can configure what interfaces should be registered to what classes.</span>
+                    </section>
+                    <section>
+                        It should look something like this.
+                        <span class="fragment"><pre><code data-trim data-noescape>
+                            public class DefaultRegistry : Registry {
+                                public DefaultRegistry() {
+                                    Scan(
+                                        scan => {
+                                            scan.TheCallingAssembly();
+                                            scan.WithDefaultConventions();
+                                            scan.With(new ControllerConvention();
+                                        });
+                                }
+                            }
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        To register the <b>FooService</b> class, we need to add only one line of code here, and the syntax is very readable.
+                        <span class="fragment"><pre><code data-trim>
+                            For&lt;IFooService&gt;().Use&lt;FooService&gt;();
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        The finished class should look like this.
+                        <span class="fragment"><pre><code data-trim>
+                            public class DefaultRegistry : Registry {
+                                public DefaultRegistry() {
+                                    Scan(
+                                        scan => {
+                                            scan.TheCallingAssembly();
+                                            scan.WithDefaultConventions();
+                                            scan.With(new ControllerConvention();
+                                        });
+                                    For&lt;IFooService&gt;().Use&lt;FooService&gt;();
+                                }
+                            }
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        This tells StructureMap to grab the pre-instantiated instance of <b>FooService</b> whenever it sees <b>IFooService</b> as the parameter in a classes constructor.
+                    </section>
+                    <section>
+                        Next, we can head over to BarController and change some things...
+                    </section>
+                    <section>
+                        Since we've configured StructureMap correctly, we can add a constructor, like so, taking a fooService parameter of type IFooService.
+                        <span class="fragment"><pre><code data-trim>
+                            public class BarController : Controller
+                            {
+                                public BarController(IFooService fooService)
+                                {
+
+                                }
+                            }
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        Like we saw earlier, this is <b>Inversion of Control</b>.
+                    </section>
+                    <section>
+                        Now, since an instance of FooService is being passed to the constructor, we have to capture it somehow to use throughout the class.
+                    </section>
+                    <section>
+                        To do this we can add a private variable to the top of the class and set it equal to the instance being passed into the constructor.
+                        <span class="fragment"><pre><code data-trim>
+                            public class BarController : Controller
+                            {
+                                private IFooService _fooService;
+
+                                public BarController(IFooService fooService)
+                                {
+                                    _fooService = fooService;
+                                }
+                            }
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        Now, we can use the _fooService variable throughout the class, in place of newing up a <b>FooService</b>.
+                        <span class="fragment"><pre><code data-trim>
+                            public class BarController : Controller
+                            {
+                                private IFooService _fooService;
+
+                                public BarController(IFooService fooService)
+                                {
+                                    _fooService = fooService;
+                                }
+
+                                public ActionResult Index()
+                                {
+                                    var message = _fooService.SayHello();
+                                    var viewModel = new BarViewModel {Message = message};
+
+                                    return View(viewModel);
+                                }
+                            }
+                        </code></pre></span>
                     </section>
                 </section>
 
