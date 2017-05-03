@@ -326,7 +326,7 @@
                         How do I <b>implement</b> these containers??
                     </section>
                     <section>
-                        Let's step through how to use a couple...
+                        Let's step through how to use a few...
                     </section>
                     <section>
                         Before we begin, let's establish a starting point.
@@ -391,89 +391,63 @@
                         As you can see, <b>BarController</b> is newing up a FooService, giving it a dependency that can't be swapped out.
                     </section>
                     <section>
-                        So let's learn how to implement a couple DI containers to fix this.
+                        So let's learn how to implement some DI containers to correct this.
                     </section>
                 </section>
 
+                <!-- Begin Ninject -->
+                
                 <section>
                     <section>
-                        First, let's take a look at Ninject.
+                        First, let's take a look at <b>Ninject</b>.
                     </section>
                     <section>
-                        Explain and demonstrate Ninject here.
-                    </section>
-                </section>
-
-                <section>
-                    <section>
-                        Now, let's look at StructureMap.
-                    </section>
-                    <section>
-                        First, you'll have to download the necessary Nuget packages.
+                        To get started, you'll have to download the necessary Nuget packages.
                     </section>
                     <section>
                         The Nuget packages we'll need are...
                     </section>
                     <section>
-                        StructureMap<br/>
-                        <span class="fragment">StructureMap.web</span><br/>
-                        <span class="fragment">StructureMap.MVC5.Update</span>
+                        Ninject<br/>
+                        <span class="fragment">Ninject.MVC5</span>
                     </section>
                     <section>
                         Now for some configuration.
                     </section>
                     <section>
-                        StructureMap automatically adds a folder called 'DependencyResolution' in the root of your project.
+                        Ninject adds a class for you in the <b>App_Start</b> folder called <b>NinjectWebCommon</b>.
                     </section>
                     <section>
-                        The most important class in here to get started is the DefaultRegistry class.<br/>
-                        <span class="fragment">This is where you can configure what interfaces should be registered to what classes.</span>
+                        Open that class and at the bottom there should be a function that looks like this...
+                        <span class="fragment"><pre><code data-trim>
+                            private static void RegisterServices(IKernel kernel)
+                            {
+                            }  
+                        </code></pre></span>
                     </section>
                     <section>
-                        It should look something like this.
-                        <span class="fragment"><pre><code data-trim data-noescape>
-                            public class DefaultRegistry : Registry {
-                                public DefaultRegistry() {
-                                    Scan(
-                                        scan => {
-                                            scan.TheCallingAssembly();
-                                            scan.WithDefaultConventions();
-                                            scan.With(new ControllerConvention();
-                                        });
-                                }
+                        To register <b>IFooService</b>, we can add this line within the function...
+                        <span class="fragment"><pre><code data-trim>
+                            kernel.Bind&lt;Interface&gt;().To&lt;Class&gt;();
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        The finished function should look like this.
+                        <span class="fragment"><pre><code data-trim>
+                            private static void RegisterServices(IKernel kernel)
+                            {
+                                kernel.Bind&lt;IFooService&gt;().To&lt;FooService&gt;();
                             }
                         </code></pre></span>
                     </section>
                     <section>
-                        To register the <b>FooService</b> class, we need to add only one line of code here, and the syntax is very readable.
-                        <span class="fragment"><pre><code data-trim>
-                            For&lt;IFooService&gt;().Use&lt;FooService&gt;();
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        The finished class should look like this.
-                        <span class="fragment"><pre><code data-trim>
-                            public class DefaultRegistry : Registry {
-                                public DefaultRegistry() {
-                                    Scan(
-                                        scan => {
-                                            scan.TheCallingAssembly();
-                                            scan.WithDefaultConventions();
-                                            scan.With(new ControllerConvention();
-                                        });
-                                    For&lt;IFooService&gt;().Use&lt;FooService&gt;();
-                                }
-                            }
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        This tells StructureMap to grab the pre-instantiated instance of <b>FooService</b> whenever it sees <b>IFooService</b> as the parameter in a classes constructor.
+                        This is telling Ninject to grab the pre-instantiated instance of <b>FooService</b> whenever it sees <b>IFooService</b> as the parameter in a classes constructor.
                     </section>
                     <section>
                         Next, we can head over to BarController and change some things...
                     </section>
                     <section>
-                        Since we've configured StructureMap correctly, we can add a constructor, like so, taking a fooService parameter of type IFooService.
+                        Since we've configured Ninject correctly, we can add a constructor, like so, taking a fooService parameter of type IFooService.
                         <span class="fragment"><pre><code data-trim>
                             public class BarController : Controller
                             {
@@ -527,6 +501,131 @@
                         </code></pre></span>
                     </section>
                 </section>
+                
+                <!-- Begin StructureMap -->
+                
+                <section>
+                    <section>
+                        Next up, <b>StructureMap</b>.
+                    </section>
+                    <section>
+                        Once again, you'll need to download the Nuget packages.
+                    </section>
+                    <section>
+                        The Nuget packages we'll need are...
+                    </section>
+                    <section>
+                        StructureMap<br/>
+                        <span class="fragment">StructureMap.web</span><br/>
+                        <span class="fragment">StructureMap.MVC5.Update</span>
+                    </section>
+                    <section>
+                        And on to the configuration...
+                    </section>
+                    <section>
+                        StructureMap automatically adds a folder called 'DependencyResolution' in the root of your project.
+                    </section>
+                    <section>
+                        The most important class in here to get started is the DefaultRegistry class.<br/>
+                        <span class="fragment">This is where you can configure what classes should be registered to what interfaces.</span>
+                    </section>
+                    <section>
+                        It should look something like this.
+                        <span class="fragment"><pre><code data-trim data-noescape>
+                            public class DefaultRegistry : Registry {
+                                public DefaultRegistry() {
+                                    Scan(
+                                        scan => {
+                                            scan.TheCallingAssembly();
+                                            scan.WithDefaultConventions();
+                                            scan.With(new ControllerConvention();
+                                        });
+                                }
+                            }
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        To register the <b>IFooService</b> class, we need to add only one line of code here, and the syntax is very readable.
+                        <span class="fragment"><pre><code data-trim>
+                            For&lt;IFooService&gt;().Use&lt;FooService&gt;();
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        The finished class should look like this.
+                        <span class="fragment"><pre><code data-trim>
+                            public class DefaultRegistry : Registry {
+                                public DefaultRegistry() {
+                                    Scan(
+                                        scan => {
+                                            scan.TheCallingAssembly();
+                                            scan.WithDefaultConventions();
+                                            scan.With(new ControllerConvention();
+                                        });
+                                    For&lt;IFooService&gt;().Use&lt;FooService&gt;();
+                                }
+                            }
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        Over in BarController...
+                    </section>
+                    <section>
+                        Let's add a constructor, taking in a fooService parameter of type IFooService.
+                        <span class="fragment"><pre><code data-trim>
+                            public class BarController : Controller
+                            {
+                                public BarController(IFooService fooService)
+                                {
+
+                                }
+                            }
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        To capture the instance of FooService, we can add a private variable to the top of the class and set it equal to the instance being passed into the constructor.
+                        <span class="fragment"><pre><code data-trim>
+                            public class BarController : Controller
+                            {
+                                private IFooService _fooService;
+
+                                public BarController(IFooService fooService)
+                                {
+                                    _fooService = fooService;
+                                }
+                            }
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        We can use the _fooService variable throughout the class.
+                        <span class="fragment"><pre><code data-trim>
+                            public class BarController : Controller
+                            {
+                                private IFooService _fooService;
+
+                                public BarController(IFooService fooService)
+                                {
+                                    _fooService = fooService;
+                                }
+
+                                public ActionResult Index()
+                                {
+                                    var message = _fooService.SayHello();
+                                    var viewModel = new BarViewModel {Message = message};
+
+                                    return View(viewModel);
+                                }
+                            }
+                        </code></pre></span>
+                    </section>
+                </section>
+
+                <!-- Begin SimpleInjector -->
+
+                <section>
+                    <section>
+                        And lastly, we'll go through <b>Simple Injector</b>.
+                    </section>
+                </section>
 
                 <section>
                     Questions
@@ -548,6 +647,7 @@
 					{ src: 'reveal/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
 				]
 			});
+            Reveal.configure({ slideNumber: 'c/t' });
 		</script>
 	</body>
 </html>
