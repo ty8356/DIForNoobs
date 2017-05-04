@@ -409,6 +409,7 @@
                     </section>
                     <section>
                         Ninject<br/>
+                        <span class="fragment">Ninject.Web.Common</span><br/>
                         <span class="fragment">Ninject.MVC5</span>
                     </section>
                     <section>
@@ -545,9 +546,9 @@
                         </code></pre></span>
                     </section>
                     <section>
-                        To register the <b>IFooService</b> class, we need to add only one line of code here, and the syntax is very readable.
+                        To register the <b>IFooService</b> class, we need to add a line of code here, and the syntax is very readable.
                         <span class="fragment"><pre><code data-trim>
-                            For&lt;IFooService&gt;().Use&lt;FooService&gt;();
+                            For&lt;Interface&gt;().Use&lt;Class&gt;();
                         </code></pre></span>
                     </section>
                     <section>
@@ -582,7 +583,7 @@
                         </code></pre></span>
                     </section>
                     <section>
-                        To capture the instance of FooService, we can add a private variable to the top of the class and set it equal to the instance being passed into the constructor.
+                        To capture the instance of FooService, we can do the same as with Ninject.
                         <span class="fragment"><pre><code data-trim>
                             public class BarController : Controller
                             {
@@ -596,7 +597,7 @@
                         </code></pre></span>
                     </section>
                     <section>
-                        We can use the _fooService variable throughout the class.
+                        Using the _fooService variable throughout the class.
                         <span class="fragment"><pre><code data-trim>
                             public class BarController : Controller
                             {
@@ -624,6 +625,102 @@
                 <section>
                     <section>
                         And lastly, we'll go through <b>Simple Injector</b>.
+                    </section>
+                    <section>
+                        As always, grab the Nuget packages...
+                    </section>
+                    <section>
+                        SimpleInjector<br/>
+                        <span class="fragment">SimpleInjector.Integration.Web</span>
+                        <span class="fragment">SimpleInjector.Integration.Web.Mvc</span>
+                    </section>
+                    <section>
+                        Simple Injector doesn't actually generate any code <i>for</i> you, but it's still extremely easy to implement.
+                    </section>
+                    <section>
+                        First, you need to go into <b>Global.asax</b> and add a new function with the configuration code.
+                        <span class="fragment"><pre><code data-trim data-noescape>
+                            protected void InitializeSimpleInjector()
+                            {
+                                var container = new Container();
+                                container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
+
+                                container.Register&lt;IFooService, FooService&gt;(Lifestyle.Scoped);
+
+                                container.RegisterMvcControllers(Assembly.GetExcecutingAssembly());
+                                container.Verify();
+
+                                DependencyResolver
+                                    .SetResolver(new SimpleInjectorDependencyResolver(container));
+                            }
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        And then call that function at the end of the <b>Application_Start</b> function.
+                        <span class="fragment"><pre><code data-trim data-noescape>
+                            protected void Application_Start()
+                            {
+                                AreaRegistration.RegisterAllAreas();
+                                FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+                                RouteConfig.RegisterRoutes(RouteTable.Routes);
+                                BundleConfig.RegisterBundles(BundleTable.Bundles);
+                                InitializeSimpleInjector();
+                            }
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        Now that that's done, we can alter the controller just like we did in the previous two examples.
+                    </section>
+                    <section>
+                        Add the constructor, as well as the private _fooService variable.
+                        <span class="fragment"><pre><code data-trim>
+                            public class BarController : Controller
+                            {
+                                private IFooService _fooService;
+
+                                public BarController(IFooService fooService)
+                                {
+                                    _fooService = fooService;
+                                }
+                            }
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        And then use that varibale throughout the class.
+                        <span class="fragment"><pre><code data-trim>
+                            public class BarController : Controller
+                            {
+                                private IFooService _fooService;
+
+                                public BarController(IFooService fooService)
+                                {
+                                    _fooService = fooService;
+                                }
+
+                                public ActionResult Index()
+                                {
+                                    var message = _fooService.SayHello();
+                                    var viewModel = new BarViewModel {Message = message};
+
+                                    return View(viewModel);
+                                }
+                            }
+                        </code></pre></span>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        And that's it! 
+                    </section>
+                    <section>
+                        We've just walked through how to implement <b>Ninject</b>, <b>StructureMap</b>, and <b>Simple Injector</b> in an MVC web application.
+                    </section>
+                    <section>
+                        There are other ways of configuring each of these containers that you may get into eventually.
+                    </section>
+                    <section>
+                        This is just the beginning.
                     </section>
                 </section>
 
