@@ -60,116 +60,199 @@
                         <div class="fragment">And what is Dependency Injection anyway???</div></p>
                     </section>
                     <section>
-                        This presentation will be directed specifically at Dependency Injection in .NET using C#, but you can take these ideas and use them in most other frameworks and languages.
-                    </section>
-                    <section>
-                        Before we get into answering the specifics, we should take a few steps back.
-                    </section>
-                </section>
-
-                <section>
-                    <section>
-                        Let's start off with the <b>problem</b> and where it stems from...
-                    </section>
-                    <section>
-                        It's generally accepted that programming to an <b>interface</b> is a good practice to get into.
-                    </section>
-                    <section>
-                        This allows you to swap classes in and out based on the situation without breaking anything within the application.
-                    </section>
-                    <section>
-                        As long as the class meets the <b>requirements</b> of the interface and the functions return the expected results, everything just works.
-                    </section>
-                    <section>
-                        Let's take a look at an example...
-                    </section>
-                    <section>
-                        <pre><code data-trim data-noescape>
-                            public class Foo
-                            {
-                                public Foo(IDatabasePersister db) 
-                                {
-                                    // some code here
-                                }
-                            }    
-                        </code></pre>
-                        <pre><code data-trim data-noescape>
-                            public interface IDatabasePersister
-                            {
-                                Object GetItemById();
-                                void Create();
-                                void Read();
-                                void Update();
-                                void Delete();
-                            }    
-                        </code></pre>
-                    </section>
-                    <section>
-                        Writing your application in this way allows you to use any type of data storage, as long as you write a class that conforms to the interface.
-                    </section>
-                    <section>
-                        This is a <b>huge advantage</b>, especially when writing large business applications.
+                        This will be specific to <b>.NET</b> using <b>C#</b>, but these ideas can be used elsewhere. 
+                        <aside class="notes">
+                            This presentation will be directed specifically at Dependency Injection in .NET using C#, but you can take these ideas and use them in most other frameworks and languages.
+                        </aside>
                     </section>
                 </section>
 
                 <section>
                     <section>
-                        This structure, passing an interface to the constructor, is known as <b>Inversion of Control</b>, or <b>IoC</b>.
+                        Let's take a few steps back...
                     </section>
                     <section>
-                        <b>Inversion of Control</b> is a software development technique in which you allow the person <b>calling</b> the class to select a concrete implementation type, as opposed to selecting one <b>yourself</b>.
+                        Before we get into <b>Dependency Injection</b>, you need to know a couple things...
+                        <aside class="notes">
+                            Before we get into Dependency Injection, you have to know a couple things.
+                        </aside>
                     </section>
                     <section>
-                        You're literally <b>inverting</b> the control.
+                        <b>Interfaces<br/><br/>
+                        <span class="fragment">Inversion of Control</b></span>
+                        <aside class="notes">
+                            Interfaces - What they are, how to use them, and how they can help you.
+                            IoC - What it is, how to use it, how it can help you.
+                        </aside>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <b>Interfaces</b>
                     </section>
                     <section>
-                        Let's take a look at IoC in <b>code</b>...
+                        Programming to <b>interfaces</b> is good.
+                        <aside class="notes">
+                            So <b>why</b> is programming to an interface so good? What do I mean by that. Well, using interfaces can make your life easier.
+                        </aside>
+                    </section>
+                    <section>
+                        Allows you to <b>swap</b> classes in and out.<br/>
+                        <span class="fragment">Simplifies <b>unit</b> and <b>integration</b> testing.</span><br/>
+                        <span class="fragment">Makes code <b>versatile</b>.</span>
+                        <aside class="notes">
+                            Programming to an interface is good because it allows you to swap classes in and out based on application needs. 
+                            Interfaces also allow for easier unit and integration testing, as you can swap the real class out for a mocked version.
+                            Similar to a contract. By implementing an interface, you <b>must</b> have all functions defined.
+                        </aside>
+                    </section>
+                    <section>
+                        Let's look at an example...
+                    </section>
+                    <section>
+                        This is an interface...
+                        <span class="fragment"><pre><code data-trim data-noescape>
+                            public interface InterfaceA
+                            {
+                                void A(string param);
+                                int B();
+                            }    
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        ... and this is a class <b>implementing</b> that interface.
+                        <span class="fragment"><pre><code data-trim data-noescape>
+                            public class ClassA : InterfaceA
+                            {
+                                public void A(string param)
+                                {
+                                    // Code here
+                                }
+
+                                public int B()
+                                {
+                                    // Code here
+                                }
+                            }    
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        How would I really use this?
+                        <aside class="notes">
+                            Talk about a personal experience.
+                            This leads us to Inversion of Control, or IoC...
+                        </aside>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <b>Inversion of Control</b>
+                    </section>
+                    <section>
+                        Let's jump straight into some code...
                     </section>
                     <section>
                         <pre><code data-trim data-noescape>
-                            public class Foo
+                            public void TestMethod()
                             {
-                                public Foo(IDatabasePersister db) 
-                                {
-                                    // some code here
-                                }
-                            }   
-                        </code></pre>
-                        <pre><code data-trim data-noescape>
-                            public class Bar
-                            {
-                                public void DoStuff()
-                                {
-                                    var db = new Database();
-                                    var foo = new Foo(db);
-                                }
+                                string a = "Hello, world!";
+                                // More code here
                             }
                         </code></pre>
-                        <span class="fragment">Notice that the <b>IDatabasePersister</b> interface is now a <b>dependency</b> of Foo.</span>
+                        <aside class="notes">
+                            Let's say you have a function that does something like this. So we're clearly creating a new string called a and then potentially using it later on.
+                            This isn't an incorrect thing to do. However, doing it this way could be really controlling with what exact string is being used.
+                            It removes your ability to use any other string in place of the one you've created here. Inversion of Control can help us out with this.
+                        </aside>
                     </section>
                     <section>
-                        This is because you <b>must</b> pass an instance of <b>IDatabasePersister</b> through when calling the class.
+                        <pre><code data-trim data-noescape>
+                            public void TestMethod(string a)
+                            {
+                                // Code here
+                            }
+                        </code></pre>
+                        <aside class="notes">
+                            Here's virtually the same thing again, but this time we're using Inversion of Control. Now, we're giving whoever is calling the function the 
+                            ability to pass through any string they want. This makes it the callers responsibility, and gives 
+                            us the option of using a different string easily later down the road. 
+                        </aside>
                     </section>
                     <section>
-                        This form of <b>IoC</b> is known as <B>Dependency Injection (DI)</b> because you are <b>injecting</b> the dependency into the class through the constructor.
+                        IoC <b>inverts</b> the <b>control</b>, so that the person calling the class can define how the class works.
+                        <aside class="notes">
+                            Basically, you can think of Inversion of Control as literally inverting the control to outside of the class. So whoever is calling the class, gets to decide how the class works.
+                        </aside>
                     </section>
                     <section>
-                        <b>Dependency Injection</b> is a set of software design principles and patterns that enable us to develop loosely coupled code.
+                        Notice that IoC makes use of interfaces as <b>parameters</b>, so a <b>variety</b> of classes can be passed in.
+                    </section>
+                    <section>
+                        Dependency Injection
+                        <aside class="notes">
+                            This brings us to Dependency Injection.....<br/>
+                            Now, whether you believe it or not, what we've just seen is, actually, <b>Dependency Injection</b>.<br/>
+                            Let's take another look at what DI looks like..
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            public void TestMethod(string a)
+                            {
+                                // Code here
+                            }
+                        </code></pre>
+                        <aside class="notes">
+                            Does this look familiar? This is what Dependency Injection looks like in code.<br/>
+                            You are literally injecting the dependency by passing it through as a parameter.<br/>
+                            We could even go as far as calling it Parameter Passing instead of Dependency Injection.<br/>
+                            However, this isn't the only form Dependency Injection can take...
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            // Constructor of ClassA class
+                            public ClassA(InterfaceA a)
+                            {
+                                // Code here
+                            }
+                        </code></pre>
+                        <aside class="notes">
+                            Most of the time, DI is meant on a class level, like this.<br/>
+                            As you can see, the constructor requires a parameter of InterfaceA.
+                        </aside>
+                    </section>
+                    <section>
+                        <b>Interfaces</b>, <b>Inversion of Control</b> and <b>Dependency Injection</b> together.
+                        <aside class="notes">
+                            So let's put some things together...
+                            Most commonly, when you hear the term Dependency Injection, it's actually in reference to the combination of Interfaces and Inversion of Control, 
+                            in addition to Dependency Injection, as opposed to just the action of passing a parameter.<br/>
+                            So from now on, when we say Dependency Injection, this is what we will be referring to.
+                        </aside>
                     </section>
                 </section>
 
                 <section>
                     <section>
-                        So what's the <b>problem</b> with Inversion of Control using Dependency Injection?
+                        <b>The Problem</b>
+                        <aside class="notes">
+                            So what's the <b>problem</b> with Inversion of Control using Dependency Injection?
+                        </aside>
                     </section>
                     <section>
-                        Well, when a class has <b>multiple dependencies</b>, things start to get pretty crazy...
+                        If a class has <b>multiple dependencies</b>, it can get complex.
+                        <aside class="notes">
+                            Well, when a class has <b>multiple dependencies</b>, things start to get pretty crazy...
+                        </aside>
                     </section>
                     <section>
                         For example...
                     </section>
                     <section>
-                        So we've seen how to inject a single dependency into a class.
+                        Injecting a <b>single dependency</b>.
                         <span class="fragment"><pre><code data-trim data-noescape>
                             public class Foo 
                             {
@@ -189,9 +272,12 @@
                                 }
                             }
                         </code></pre></span>
+                        <aside class="notes">
+                            So we've seen how to inject a single dependency into a class.
+                        </aside>
                     </section>
                     <section>
-                        But what if there are two dependencies?
+                        But what if there are <b>two dependencies</b>?
                         <span class="fragment"><pre><code data-trim data-noescape>
                             public class Foo 
                             {
@@ -241,6 +327,9 @@
                                 }
                             }
                         </code></pre></span>
+                        <aside class="notes">
+                            At this point, if you have 5 dependencies for a single class, there are probably some other problems you need to take care of, but we won't go into that now.
+                        </aside>
                     </section>
                     <section>
                         And what if the <b>dependencies</b> have multiple <b>dependencies</b> of their own??
@@ -285,16 +374,25 @@
                         </code></pre>
                     </section>
                     <section>
-                        As you can see, this can get extremely complex...
+                        This can get extremely complex...
+                        <aside class="notes">
+                            As you can see, this can get really complex, really fast.
+                        </aside>
                     </section>
                 </section>
 
                 <section>
                     <section>
-                        So what's the solution?
+                        <b>The Solution</b>
+                        <aside class="notes">
+                            So what's the solution?
+                        </aside>
                     </section>
                     <section>
-                        Assuming you don't want to just grit your teeth and go at it the hard way, you can use something called a <b>DI Container</b>.
+                        Dependency Injection Containers
+                        <aside class="notes">
+                            Assuming you don't want to just grit your teeth and go at it the hard way, you can use something called a <b>DI Container</b>.
+                        </aside>
                     </section>
                     <section>
                         A <b>DI Container</b> is a software library that provides DI functionality.
