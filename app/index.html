@@ -69,8 +69,14 @@
 
                 <section>
                     <section>
-                        Let's take a few steps back...
+                        So we've got a <b>problem</b>...
+                        <aside class="notes">
+                            So we have a problem... And I'm going to show you how to fix that problem... let's get started.
+                        </aside>
                     </section>
+                </section>
+
+                <section>
                     <section>
                         Before we get into <b>Dependency Injection</b>, you need to know a couple things...
                         <aside class="notes">
@@ -176,8 +182,8 @@
                         </code></pre>
                         <aside class="notes">
                             Here's virtually the same thing again, but this time we're using Inversion of Control. Now, we're giving whoever is calling the function the 
-                            ability to pass through any string they want. This makes it the callers responsibility, and gives 
-                            us the option of using a different string easily later down the road. 
+                            ability and the permission to pass through any string they can think of. This makes it the callers responsibility, and gives us the option of using a different string 
+                            easily later down the road. 
                         </aside>
                     </section>
                     <section>
@@ -187,55 +193,75 @@
                         </aside>
                     </section>
                     <section>
-                        Notice that IoC makes use of interfaces as <b>parameters</b>, so a <b>variety</b> of classes can be passed in.
-                    </section>
-                    <section>
                         Dependency Injection
                         <aside class="notes">
                             This brings us to Dependency Injection.....<br/>
-                            Now, whether you believe it or not, what we've just seen is, actually, <b>Dependency Injection</b>.<br/>
+                            Now, whether you believe it or not, what we've just seen is actually <b>Dependency Injection</b>.<br/>
                             Let's take another look at what DI looks like..
                         </aside>
                     </section>
                     <section>
                         <pre><code data-trim data-noescape>
-                            public void TestMethod(string a)
-                            {
-                                // Code here
-                            }
+                            var msg = "Hello, world!";
+                            MethodA(msg);
                         </code></pre>
                         <aside class="notes">
                             Does this look familiar? This is what Dependency Injection looks like in code.<br/>
-                            You are literally injecting the dependency by passing it through as a parameter.<br/>
+                            It's literally the act of passing a parameter into a class.<br/>
+                            You are literally injecting the dependency by passing it through as a parameter, so now msg IS a dependency of MethodA.<br/>
                             We could even go as far as calling it Parameter Passing instead of Dependency Injection.<br/>
-                            However, this isn't the only form Dependency Injection can take...
-                        </aside>
-                    </section>
-                    <section>
-                        <pre><code data-trim data-noescape>
-                            // Constructor of ClassA class
-                            public ClassA(InterfaceA a)
-                            {
-                                // Code here
-                            }
-                        </code></pre>
-                        <aside class="notes">
-                            Most of the time, DI is meant on a class level, like this.<br/>
-                            As you can see, the constructor requires a parameter of InterfaceA.
-                        </aside>
-                    </section>
-                    <section>
-                        <b>Interfaces</b>, <b>Inversion of Control</b> and <b>Dependency Injection</b> together.
-                        <aside class="notes">
-                            So let's put some things together...
-                            Most commonly, when you hear the term Dependency Injection, it's actually in reference to the combination of Interfaces and Inversion of Control, 
-                            in addition to Dependency Injection, as opposed to just the action of passing a parameter.<br/>
-                            So from now on, when we say Dependency Injection, this is what we will be referring to.
                         </aside>
                     </section>
                 </section>
 
                 <section>
+                    <section>
+                        Let's dive deeper...
+                        <aside class="notes">
+                            So now that you know all of this stuff, let's dive a little deeper into Dependency Injection...
+                        </aside>
+                    </section>
+                    <section>
+                        A Different Look at DI.
+                        <aside class="notes">
+                            So far, we've looked at DI on a function level, passing variables into functions and what not.. Although this IS a form of DI, normally when you hear the 
+                            term Dependency Injection, it's actually in reference to passing variables into <i>classes</i>, not functions.
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            var msg = "Hello, world!";
+                            var testService = new TestService(msg);
+                        </code></pre>
+                        <aside class="notes">
+                            Notice that we're actually passing the msg variable into the class when we new it up!
+                            On the other side of things, the class is capturing that variable in the constructor.
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            public TestService(string msg)
+                            {
+                                // Code here
+                            }
+                        </code></pre>
+                        <aside class="notes">
+                            On the other side of things, the class is capturing that variable in the constructor.
+                            Because the constructor takes a string of msg, it now has a <b>dependency</b>.
+                        </aside>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <b>The Problem</b>
+                        <aside class="notes">
+                            Now.......... we can finally get to the problem....
+                        </aside>
+                    </section>
+                </section>
+
+                <!--<section>
                     <section>
                         <b>The Problem</b>
                         <aside class="notes">
@@ -379,7 +405,7 @@
                             As you can see, this can get really complex, really fast.
                         </aside>
                     </section>
-                </section>
+                </section>-->
 
                 <section>
                     <section>
