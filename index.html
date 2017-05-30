@@ -60,664 +60,572 @@
                         <div class="fragment">And what is Dependency Injection anyway???</div></p>
                     </section>
                     <section>
-                        This presentation will be directed specifically at Dependency Injection in .NET using C#, but you can take these ideas and use them in most other frameworks and languages.
-                    </section>
-                    <section>
-                        Before we get into answering the specifics, we should take a few steps back.
+                        This will be specific to <b>.NET</b> using <b>C#</b>, but these ideas can be used elsewhere. 
+                        <aside class="notes">
+                            This presentation will be directed specifically at Dependency Injection in .NET using C#, but you can take these ideas and use them in most other frameworks and languages.
+                        </aside>
                     </section>
                 </section>
 
                 <section>
                     <section>
-                        Let's start off with the <b>problem</b> and where it stems from...
+                        So we've got a <b>problem</b>...
+                        <aside class="notes">
+                            So we have a problem... And I'm going to show you how to fix that problem... let's get started.
+                            <br />
+                            So there is a problem with Dependency Injection. But before we actually get into that problem, I want to make sure you have some kind of foundation of <i>what</i> Dependency Injection really is.
+                        </aside>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        Before we get into <b>Dependency Injection</b>, you need to know a couple things...
+                        <aside class="notes">
+                            Before we get into Dependency Injection, you have to know a couple things.
+                            <br />
+                            So, there are a couple of things you need to know before we get into dependency injection.
+                        </aside>
                     </section>
                     <section>
-                        It's generally accepted that programming to an <b>interface</b> is a good practice to get into.
+                        <b>Interfaces<br/><br/>
+                        <span class="fragment">Inversion of Control</b></span>
+                        <aside class="notes">
+                            Interfaces - What they are, how to use them, and how they can help you.
+                            IoC - What it is, how to use it, how it can help you.
+                        </aside>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <b>Interfaces</b>
                     </section>
                     <section>
-                        This allows you to swap classes in and out based on the situation without breaking anything within the application.
+                        Programming to <b>interfaces</b> is good.
+                        <aside class="notes">
+                            So <b>why</b> is programming to an interface so good? What do I mean by that. Well, using interfaces can make your life easier.
+                        </aside>
                     </section>
                     <section>
-                        As long as the class meets the <b>requirements</b> of the interface and the functions return the expected results, everything just works.
+                        Allows you to <b>swap</b> classes in and out.<br/>
+                        <span class="fragment">Simplifies <b>unit</b> and <b>integration</b> testing.</span><br/>
+                        <span class="fragment">Makes code <b>versatile</b>.</span>
+                        <aside class="notes">
+                            Programming to an interface is good because it allows you to swap classes in and out based on application needs. 
+                            Interfaces also allow for easier unit and integration testing, as you can swap the real class out for a mocked version.
+                            Similar to a contract. By implementing an interface, you <b>must</b> have all functions defined.
+                        </aside>
                     </section>
                     <section>
-                        Let's take a look at an example...
+                        Let's look at an example...
                     </section>
                     <section>
-                        <pre><code data-trim data-noescape>
-                            public class Foo
+                        This is an interface...
+                        <span class="fragment"><pre><code data-trim data-noescape>
+                            public interface InterfaceA
                             {
-                                public Foo(IDatabasePersister db) 
+                                void A(string param);
+                                int B();
+                            }    
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        ... and this is a class <b>implementing</b> that interface.
+                        <span class="fragment"><pre><code data-trim data-noescape>
+                            public class ClassA : InterfaceA
+                            {
+                                public void A(string param)
                                 {
-                                    // some code here
+                                    // Code here
+                                }
+
+                                public int B()
+                                {
+                                    // Code here
                                 }
                             }    
-                        </code></pre>
-                        <pre><code data-trim data-noescape>
-                            public interface IDatabasePersister
-                            {
-                                Object GetItemById();
-                                void Create();
-                                void Read();
-                                void Update();
-                                void Delete();
-                            }    
-                        </code></pre>
+                        </code></pre></span>
                     </section>
                     <section>
-                        Writing your application in this way allows you to use any type of data storage, as long as you write a class that conforms to the interface.
-                    </section>
-                    <section>
-                        This is a <b>huge advantage</b>, especially when writing large business applications.
+                        How would I really use this?
+                        <aside class="notes">
+                            Talk about a personal experience.
+                            This leads us to Inversion of Control, or IoC...
+                        </aside>
                     </section>
                 </section>
 
                 <section>
                     <section>
-                        This structure, passing an interface to the constructor, is known as <b>Inversion of Control</b>, or <b>IoC</b>.
+                        <b>Inversion of Control</b>
                     </section>
                     <section>
-                        <b>Inversion of Control</b> is a software development technique in which you allow the person <b>calling</b> the class to select a concrete implementation type, as opposed to selecting one <b>yourself</b>.
-                    </section>
-                    <section>
-                        You're literally <b>inverting</b> the control.
-                    </section>
-                    <section>
-                        Let's take a look at IoC in <b>code</b>...
+                        Let's jump straight into some code...
                     </section>
                     <section>
                         <pre><code data-trim data-noescape>
-                            public class Foo
+                            public void TestMethod()
                             {
-                                public Foo(IDatabasePersister db) 
-                                {
-                                    // some code here
-                                }
-                            }   
-                        </code></pre>
-                        <pre><code data-trim data-noescape>
-                            public class Bar
-                            {
-                                public void DoStuff()
-                                {
-                                    var db = new Database();
-                                    var foo = new Foo(db);
-                                }
+                                string a = "Hello, world!";
+                                // More code here
                             }
                         </code></pre>
-                        <span class="fragment">Notice that the <b>IDatabasePersister</b> interface is now a <b>dependency</b> of Foo.</span>
+                        <aside class="notes">
+                            Let's say you have a function that does something like this. So we're clearly creating a new string called a and then potentially using it later on.
+                            This isn't an incorrect thing to do. However, doing it this way could be really controlling with what exact string is being used.
+                            It removes your ability to use any other string in place of the one you've created here. Inversion of Control can help us out with this.
+                        </aside>
                     </section>
                     <section>
-                        This is because you <b>must</b> pass an instance of <b>IDatabasePersister</b> through when calling the class.
+                        <pre><code data-trim data-noescape>
+                            public void TestMethod(string a)
+                            {
+                                // Code here
+                            }
+                        </code></pre>
+                        <aside class="notes">
+                            Here's virtually the same thing again, but this time we're using Inversion of Control. Now, we're giving whoever is calling the function the 
+                            ability and the permission to pass through any string they can think of. This makes it the callers responsibility, and gives us the option of using a different string 
+                            easily later down the road. 
+                        </aside>
                     </section>
                     <section>
-                        This form of <b>IoC</b> is known as <B>Dependency Injection (DI)</b> because you are <b>injecting</b> the dependency into the class through the constructor.
+                        IoC <b>inverts</b> the <b>control</b>, so that the person calling the class can define how the class works.
+                        <aside class="notes">
+                            Basically, you can think of Inversion of Control as literally inverting the control to outside of the class. So whoever is calling the class, gets to decide how the class works.
+                        </aside>
                     </section>
                     <section>
-                        <b>Dependency Injection</b> is a set of software design principles and patterns that enable us to develop loosely coupled code.
+                        Dependency Injection
+                        <aside class="notes">
+                            This brings us to Dependency Injection.....<br/>
+                            Now, whether you believe it or not, what we've just seen is actually <b>Dependency Injection</b>.<br/>
+                            Let's take another look at what DI looks like..
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            var msg = "Hello, world!";
+                            MethodA(msg);
+                        </code></pre>
+                        <aside class="notes">
+                            Does this look familiar? This is what Dependency Injection looks like in code.<br/>
+                            It's literally the act of passing a parameter into a class.<br/>
+                            You are literally injecting the dependency by passing it through as a parameter, so now msg IS a dependency of MethodA.<br/>
+                            We could even go as far as calling it Parameter Passing instead of Dependency Injection.<br/>
+                        </aside>
                     </section>
                 </section>
 
                 <section>
                     <section>
-                        So what's the <b>problem</b> with Inversion of Control using Dependency Injection?
+                        Let's dive deeper...
+                        <aside class="notes">
+                            So now that you know all of this stuff, let's dive a little deeper into Dependency Injection...
+                        </aside>
                     </section>
                     <section>
-                        Well, when a class has <b>multiple dependencies</b>, things start to get pretty crazy...
-                    </section>
-                    <section>
-                        For example...
-                    </section>
-                    <section>
-                        So we've seen how to inject a single dependency into a class.
-                        <span class="fragment"><pre><code data-trim data-noescape>
-                            public class Foo 
-                            {
-                                public Foo(IDatabasePersister db)
-                                {
-                                    // code here
-                                }
-                            }
-                        </code></pre>
-                        <pre><code data-trim data-noescape>
-                            public class Bar
-                            {
-                                public void DoStuff()
-                                {
-                                    var db = new Database();
-                                    var foo = new Foo(db);
-                                }
-                            }
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        But what if there are two dependencies?
-                        <span class="fragment"><pre><code data-trim data-noescape>
-                            public class Foo 
-                            {
-                                public Foo(IDatabasePersister db, IProductService productService)
-                                {
-                                    // code here
-                                }
-                            }
-                        </code></pre>
-                        <pre><code data-trim data-noescape>
-                            public class Bar
-                            {
-                                public void DoStuff()
-                                {
-                                    var db = new Database();
-                                    var productService = new ProductService();
-                                    var foo = new Foo(db, productService);
-                                }
-                            }
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        Five?
-                        <span class="fragment"><pre><code data-trim data-noescape>
-                            public class Foo 
-                            {
-                                public Foo(IDatabasePersister db, IProductService productService, 
-                            ICartService cartService, IPriceService priceService, IDiscountService 
-                            discountService)
-                                {
-                                    // code here
-                                }
-                            }
-                        </code></pre>
-                        <pre><code data-trim data-noescape>
-                            public class Bar
-                            {
-                                public void DoStuff()
-                                {
-                                    var db = new Database();
-                                    var productService = new ProductService();
-                                    var cartService = new CartService();
-                                    var priceService = new PriceService();
-                                    var discountService = new DiscountService();
-                                    var foo = new Foo(db, productService, cartService, priceService, 
-                            discountService);
-                                }
-                            }
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        And what if the <b>dependencies</b> have multiple <b>dependencies</b> of their own??
+                        A Different Look at DI.
+                        <aside class="notes">
+                            So far, we've looked at DI on a function level, passing variables into functions and what not.. Although this IS a form of DI, normally when you hear the 
+                            term Dependency Injection, it's actually in reference to passing variables into <i>classes</i>, not functions.
+                        </aside>
                     </section>
                     <section>
                         <pre><code data-trim data-noescape>
-                            public class ProductService : IProductService 
-                            {
-                                public ProductService(ICartService cartService, IPriceService 
-                            priceService, IDiscountService discountService)
-                                {
-                                    // code here
-                                }
-                            }
+                            var msg = "Hello, world!";
+                            var testService = new TestService(msg);
                         </code></pre>
-                        <pre><code data-trim data-noescape>
-                            public class Foo 
-                            {
-                                public Foo(IDatabasePersister db, IProductService productService)
-                                {
-                                    // code here
-                                }
-                            }
-                        </code></pre>
+                        <aside class="notes">
+                            Notice that we're actually passing the msg variable into the class when we new it up!
+                        </aside>
                     </section>
                     <section>
                         <pre><code data-trim data-noescape>
-                            public class Bar
+                            public TestService(string msg)
                             {
-                                public void DoStuff()
-                                {
-                                    var cartService = new CartService();
-                                    var priceService = new PriceService();
-                                    var discountService = new DiscountService();
-                                    var productService = new ProductService(cartService, priceService,
-                            discountService);
-
-                                    var db = new Database();
-                                    var foo = new Foo(db, productService);
-                                }
+                                // Code here
                             }
                         </code></pre>
+                        <aside class="notes">
+                            On the other side of things, the class is capturing that variable in the constructor.
+                            Because the constructor takes a string of msg, it now has a <b>dependency</b>, because it depends on that string being passed through.
+                        </aside>
                     </section>
                     <section>
-                        As you can see, this can get extremely complex...
+                        <pre><code data-trim data-noescape>
+                            public TestService(ClassA classA)
+                            {
+                                // Code here
+                            }
+                        </code></pre>
+                        <aside class="notes">
+                            To go even further, we can actually pass through entire classes to be used within the receiving class. That would look something like this.
+                        </aside>
                     </section>
                 </section>
 
                 <section>
                     <section>
-                        So what's the solution?
+                        Interfaces, Inversion of Control, and Dependency Injection together.
+                        <aside class="notes">
+                            So let's take a look at everything we've seen so far, Interfaces, DI, and IoC working together to get a better picture of how we'll be using them in the future.<br/>
+                            So by combining these three things, we get a great way to keep our code extremely maintainable as well as testable. Let's look at an example of Interfaces, IoC, and DI working together.
+                        </aside>
                     </section>
                     <section>
-                        Assuming you don't want to just grit your teeth and go at it the hard way, you can use something called a <b>DI Container</b>.
-                    </section>
-                    <section>
-                        A <b>DI Container</b> is a software library that provides DI functionality.
-                    </section>
-                    <section>
-                        As opposed to doing all the hard work yourself (<b>Poor Man's DI</b>), you can use a container that does it for you.
-                    </section>
-                    <section>
-                        In the .NET world, a lot of these containers come through <b>Nuget packages</b>, so they're relatively easy to pull down and configure.
-                    </section>
-                    <section>
-                        A few of the most common DI Containers are...
-                    </section>
-                    <section>
-                        StructureMap<br/>
-                        <span class="fragment">Castle Windsor</span><br/>
-                        <span class="fragment">Spring.NET</span><br/>
-                        <span class="fragment">Autofac</span><br/>
-                        <span class="fragment">Ninject</span><br/>
-                        <span class="fragment">Unity</span>
-                    </section>
-                </section>
-
-                <section>
-                    <section>
-                        How do I <b>implement</b> these containers??
-                    </section>
-                    <section>
-                        Let's step through how to use a few...
-                    </section>
-                    <section>
-                        Before we begin, let's establish a starting point.
-                    </section>
-                    <section>
-                        I'll be demonstrating this through an MVC Web Application using Visual Studio 2017.
-                    </section>
-                    <section>
-                        So we have a solution in Visual Studio with two projects.<br/>
-                        <span class="fragment"><b>Web</b>, the MVC project...</span><br/>
-                        <span class="fragment">and <b>Data</b>, a C# class library.</span>
-                    </section>
-                    <section>
-                        In the <b>Data</b> project, there's a interface called <b>IFooService</b> and a class that inherits it called <b>FooService</b>.
-                        <span class="fragment"><pre><code data-trim data-noescape>
-                            public interface IFooService
+                        <span class="fragment">Without an Interface</span>
+                        <pre><code data-trim data-noescape>
+                            public TestService(ClassA classA)
                             {
-                                string SayHello();
+                                // Code here
                             }
                         </code></pre>
-                        <pre><code data-trim data-noescape>
-                            public class FooService : IFooService
+                        <span class="fragment">With an Interface
+                            <pre><code data-trim data-noescape>
+                            public TestService(IClassA classA)
                             {
-                                public string SayHello()
-                                {
-                                    var message = "Hello from FooService!"
-                                    return message;
-                                }
+                                // Code here
                             }
                         </code></pre></span>
-                    </section>
-                    <section>
-                        In the <b>Web</b> project, we have a controller called <b>BarController</b>, along with <b>BarViewModel</b> class and a view called <b>Bar</b>.
+                        <aside class="notes">
+                            As of now, we've only looked at passing concrete type through the constructor. What if we used an interface instead? By using an interface instead of a concrete type, we're able to pass any class we want through the constructor, as long as it makes use of the correct interface.
+                            So instead of writing something like this.....
+                            we could write this.
+                            So instead of passing through a ClassA, we can instead pass through the interface IClassA.
+                            By using interfaces and IoC in this way, we open up a ton of options.
+                        </aside>
                     </section>
                     <section>
                         <pre><code data-trim data-noescape>
-                            public class BarController : Controller
-                            {
-                                public ActionResult Index()
-                                {
-                                    var fooService = new Data.FooService();
-                                    var message = fooService.SayHello();
-                                    var viewModel = new BarViewModel {Message = message};
-
-                                    return View(viewModel);
-                                }
-                            }
+                            var classA = new ClassA();
+                            var testService = new TestService(classA)
                         </code></pre>
-                        <pre><code data-trim data-noescape>
-                            public class BarViewModel
-                            {
-                                public string Message { get; set; }
-                            }
-                        </code></pre>
-                        <pre><code data-trim>
-                            @model BarViewModel
-
-                            <p>Message: @Model.Message</p>
-                        </code></pre>
-                    </section>
-                    <section>
-                        As you can see, <b>BarController</b> is newing up a FooService, giving it a dependency that can't be swapped out.
-                    </section>
-                    <section>
-                        So let's learn how to implement some DI containers to correct this.
-                    </section>
-                </section>
-
-                <!-- Begin Ninject -->
-                
-                <section>
-                    <section>
-                        First, let's take a look at <b>Ninject</b>.
-                    </section>
-                    <section>
-                        To get started, you'll have to download the necessary Nuget packages.
-                    </section>
-                    <section>
-                        The Nuget packages we'll need are...
-                    </section>
-                    <section>
-                        Ninject<br/>
-                        <span class="fragment">Ninject.Web.Common</span><br/>
-                        <span class="fragment">Ninject.MVC5</span>
-                    </section>
-                    <section>
-                        Now for some configuration.
-                    </section>
-                    <section>
-                        Ninject adds a class for you in the <b>App_Start</b> folder called <b>NinjectWebCommon</b>.
-                    </section>
-                    <section>
-                        Open that class and at the bottom there should be a function that looks like this...
-                        <span class="fragment"><pre><code data-trim>
-                            private static void RegisterServices(IKernel kernel)
-                            {
-                            }  
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        To register <b>IFooService</b>, we can add this line within the function...
-                        <span class="fragment"><pre><code data-trim>
-                            kernel.Bind&lt;Interface&gt;().To&lt;Class&gt;();
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        The finished function should look like this.
-                        <span class="fragment"><pre><code data-trim>
-                            private static void RegisterServices(IKernel kernel)
-                            {
-                                kernel.Bind&lt;IFooService&gt;().To&lt;FooService&gt;();
-                            }
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        This is telling Ninject to grab the pre-instantiated instance of <b>FooService</b> whenever it sees <b>IFooService</b> as the parameter in a classes constructor.
-                    </section>
-                    <section>
-                        Next, we can head over to BarController and change some things...
-                    </section>
-                    <section>
-                        Since we've configured Ninject correctly, we can add a constructor, like so, taking a fooService parameter of type IFooService.
-                        <span class="fragment"><pre><code data-trim>
-                            public class BarController : Controller
-                            {
-                                public BarController(IFooService fooService)
-                                {
-
-                                }
-                            }
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        Like we saw earlier, this is <b>Inversion of Control</b>.
-                    </section>
-                    <section>
-                        Now, since an instance of FooService is being passed to the constructor, we have to capture it somehow to use throughout the class.
-                    </section>
-                    <section>
-                        To do this we can add a private variable to the top of the class and set it equal to the instance being passed into the constructor.
-                        <span class="fragment"><pre><code data-trim>
-                            public class BarController : Controller
-                            {
-                                private IFooService _fooService;
-
-                                public BarController(IFooService fooService)
-                                {
-                                    _fooService = fooService;
-                                }
-                            }
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        Now, we can use the _fooService variable throughout the class, in place of newing up a <b>FooService</b>.
-                        <span class="fragment"><pre><code data-trim>
-                            public class BarController : Controller
-                            {
-                                private IFooService _fooService;
-
-                                public BarController(IFooService fooService)
-                                {
-                                    _fooService = fooService;
-                                }
-
-                                public ActionResult Index()
-                                {
-                                    var message = _fooService.SayHello();
-                                    var viewModel = new BarViewModel {Message = message};
-
-                                    return View(viewModel);
-                                }
-                            }
-                        </code></pre></span>
+                        <aside class="notes">
+                            On the other side of things, this is what calling that class would look like. We're able to pass through anything that implements the IClassA interface. As you know, this is Dependency Injection.
+                        </aside>
                     </section>
                 </section>
                 
-                <!-- Begin StructureMap -->
+                <section>
+                    <section>
+                        <b>The Problem</b>
+                        <aside class="notes">
+                            Now.......... we can finally get to that problem we teased earlier....<br/>
+                            So this whole inversion of control/dependency injection thing is great, right? We're able to reverse the responsibility to the outside of our class. What's not to love? 
+                        </aside>
+                    </section>
+                    <section>
+                        Multiple Dependencies
+                        <aside class="notes">
+                            Well, the problem comes in when we start to have multiple dependencies. Let's take a look at some examples.
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            // Class with no dependencies
+                            public class ClassA
+                            {
+                                public ClassA()
+                                {
+
+                                }
+                            }
+                        </code></pre>
+                        <aside class="notes">
+                            So let's start from square one. This is a class that has no dependencies. Just your plain old class, doing nothing special.
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            // Newing up a class with no dependencies
+                            var classA = new ClassA();
+                        </code></pre>
+                        <aside class="notes">
+                            And newing this class up would look a little something like this. Because it has no dependencies, we don't need to worry about passing anything into it.
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            // Class with a single dependency
+                            public class ClassA
+                            {
+                                public ClassA(ClassB classB) 
+                                {
+                                    
+                                }
+                            }
+                        </code></pre>
+                        <aside class="notes">
+                            Now, let's, again, look at a class with a single dependency, to refresh our minds.
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            // Newing up a class with a single dependency
+                            var classB = new ClassB();
+                            var classA = new ClassA(classB);
+                        </code></pre>
+                        <aside class="notes">
+                            So here, you can see that you have to create a new ClassB, and <i>then</i> create a new ClassA, passing the ClassB through.<br/>
+                            So obviously, this is a little more tedious than newing up a class with no dependencies. But just wait.......
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            // Class with two dependencies
+                            public class ClassA
+                            {
+                                public ClassA(ClassB classB, ClassC classC) 
+                                {
+                                    
+                                }
+                            }
+                        </code></pre>
+                        <aside class="notes">
+                            Let's say now that we have a class with two dependencies... This is what that class would look like.....
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            // Newing up a class with two dependencies
+                            var classB = new ClassB();
+                            var classC = new ClassC();
+                            var classA = new ClassA(classB, classC);
+                        </code></pre>
+                        <aside class="notes">
+                            And again, this is how you would create a new instance of it...
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            // Newing up a class with n dependencies
+                            var classB = new ClassB();
+                            var classC = new ClassC();
+                            .
+                            .
+                            .
+                            var classN = new ClassN();
+
+                            var classA = new ClassA(classB, classC, ..., classN);
+                        </code></pre>
+                        <aside class="notes">
+                            Let's say that ClassA has N number of dependencies. That would look similar to this. That's a lot of dependencies.
+                        </aside>
+                    </section>
+                    <section>
+                        Multiple Dependencies with Dependencies
+                        <aside class="notes">
+                            Let's not forget to mention that all of these dependencies could have classes that they are dependent on as well. This can get absolutely absurd.
+                        </aside>
+                    </section>
+                    <section>
+                        So what's the <b>problem</b>?
+                        <aside class="notes">
+                            Well, if you haven't zeroed in on the problem yet, here it is...
+                            <br/>
+                            Newing up a ton of classses to pass into another is a ton of code, right?
+                            <br/>
+                            <i>That</i> is the problem with Dependency Injection.
+                            <br/>
+                            In other words, the problem with Dependency Injection is that it doesn't scale well with multiple dependencies.
+                        </aside>
+                    </section>
+                </section>
                 
                 <section>
                     <section>
-                        Next up, <b>StructureMap</b>.
+                        <b>The Solution</b>
+                        <aside class="notes">
+                            So now that we understand the problem, what's the solution?
+                        </aside>
                     </section>
                     <section>
-                        Once again, you'll need to download the Nuget packages.
+                        Don't do it yourself.
+                        <aside class="notes">
+                            The answer to this is simple, don't do it yourself. Instead, you should automate the process.
+                        </aside>
                     </section>
                     <section>
-                        The Nuget packages we'll need are...
+                        So how do you automate the process?
+                        <aside class="notes">
+                            So at this point you're probably wondering 'How do I automate this process?'. Well, you should be using a Dependency Injection framework.
+                        </aside>
                     </section>
                     <section>
-                        StructureMap<br/>
-                        <span class="fragment">StructureMap.web</span><br/>
-                        <span class="fragment">StructureMap.MVC5.Update</span>
+                        Dependency Injection Frameworks
+                        <aside class="notes">
+                        So what is a Dependency Injection framework?
+                        <br/>
+                        It's a library that provides the tools necessary to easily automate the process of instantiating and injecting classes into other classes.
+                        <br/>
+                        So what does that really mean?
+                        <br/>
+                        Basically, a DI framework is a library that automates DI.
+                        </aside>
                     </section>
                     <section>
-                        And on to the configuration...
+                        More on Frameworks..
+                        <aside class="notes">
+                            So we have two pretty important questions here: How do DI frameworks work? and How do DI frameworks help me?
+                        </aside>
                     </section>
                     <section>
-                        StructureMap automatically adds a folder called 'DependencyResolution' in the root of your project.
+                        How do Dependency Injection frameworks work?
+                        <aside class="notes">
+                            <ol>
+                                <li>To start off, you need to configure your framwork within your code.</li>
+                                <li>We'll get more into configuration later, but the important thing to know here is that you're telling the framework what to use and when to use it.</li>
+                                <li>Once you configure your framework, when you spin your app up, all classes that you registered will get newed up and put into what's called a Dependency Injection container.</li>
+                                <li>From there, you're able to pull any class that's in your container out at any time and use it, as opposed to having to new one up wherever you need it.</li>
+                                <li>Those are the very basics of how a DI framework functions.</li>
+                            </ol>
+                        </aside>
                     </section>
                     <section>
-                        The most important class in here to get started is the DefaultRegistry class.<br/>
-                        <span class="fragment">This is where you can configure what classes should be registered to what interfaces.</span>
-                    </section>
-                    <section>
-                        It should look something like this.
-                        <span class="fragment"><pre><code data-trim data-noescape>
-                            public class DefaultRegistry : Registry {
-                                public DefaultRegistry() {
-                                    Scan(
-                                        scan => {
-                                            scan.TheCallingAssembly();
-                                            scan.WithDefaultConventions();
-                                            scan.With(new ControllerConvention();
-                                        });
-                                }
-                            }
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        To register the <b>IFooService</b> class, we need to add a line of code here, and the syntax is very readable.
-                        <span class="fragment"><pre><code data-trim>
-                            For&lt;Interface&gt;().Use&lt;Class&gt;();
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        The finished class should look like this.
-                        <span class="fragment"><pre><code data-trim>
-                            public class DefaultRegistry : Registry {
-                                public DefaultRegistry() {
-                                    Scan(
-                                        scan => {
-                                            scan.TheCallingAssembly();
-                                            scan.WithDefaultConventions();
-                                            scan.With(new ControllerConvention();
-                                        });
-                                    For&lt;IFooService&gt;().Use&lt;FooService&gt;();
-                                }
-                            }
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        Over in BarController...
-                    </section>
-                    <section>
-                        Let's add a constructor, taking in a fooService parameter of type IFooService.
-                        <span class="fragment"><pre><code data-trim>
-                            public class BarController : Controller
-                            {
-                                public BarController(IFooService fooService)
-                                {
-
-                                }
-                            }
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        To capture the instance of FooService, we can do the same as with Ninject.
-                        <span class="fragment"><pre><code data-trim>
-                            public class BarController : Controller
-                            {
-                                private IFooService _fooService;
-
-                                public BarController(IFooService fooService)
-                                {
-                                    _fooService = fooService;
-                                }
-                            }
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        Using the _fooService variable throughout the class.
-                        <span class="fragment"><pre><code data-trim>
-                            public class BarController : Controller
-                            {
-                                private IFooService _fooService;
-
-                                public BarController(IFooService fooService)
-                                {
-                                    _fooService = fooService;
-                                }
-
-                                public ActionResult Index()
-                                {
-                                    var message = _fooService.SayHello();
-                                    var viewModel = new BarViewModel {Message = message};
-
-                                    return View(viewModel);
-                                }
-                            }
-                        </code></pre></span>
-                    </section>
-                </section>
-
-                <!-- Begin SimpleInjector -->
-
-                <section>
-                    <section>
-                        And lastly, we'll go through <b>Simple Injector</b>.
-                    </section>
-                    <section>
-                        As always, grab the Nuget packages...
-                    </section>
-                    <section>
-                        SimpleInjector<br/>
-                        <span class="fragment">SimpleInjector.Integration.Web</span>
-                        <span class="fragment">SimpleInjector.Integration.Web.Mvc</span>
-                    </section>
-                    <section>
-                        Simple Injector doesn't actually generate any code <i>for</i> you, but it's still extremely easy to implement.
-                    </section>
-                    <section>
-                        First, you need to go into <b>Global.asax</b> and add a new function with the configuration code.
-                        <span class="fragment"><pre><code data-trim data-noescape>
-                            protected void InitializeSimpleInjector()
-                            {
-                                var container = new Container();
-                                container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
-
-                                container.Register&lt;IFooService, FooService&gt;(Lifestyle.Scoped);
-
-                                container.RegisterMvcControllers(Assembly.GetExcecutingAssembly());
-                                container.Verify();
-
-                                DependencyResolver
-                                    .SetResolver(new SimpleInjectorDependencyResolver(container));
-                            }
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        And then call that function at the end of the <b>Application_Start</b> function.
-                        <span class="fragment"><pre><code data-trim data-noescape>
-                            protected void Application_Start()
-                            {
-                                AreaRegistration.RegisterAllAreas();
-                                FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-                                RouteConfig.RegisterRoutes(RouteTable.Routes);
-                                BundleConfig.RegisterBundles(BundleTable.Bundles);
-                                InitializeSimpleInjector();
-                            }
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        Now that that's done, we can alter the controller just like we did in the previous two examples.
-                    </section>
-                    <section>
-                        Add the constructor, as well as the private _fooService variable.
-                        <span class="fragment"><pre><code data-trim>
-                            public class BarController : Controller
-                            {
-                                private IFooService _fooService;
-
-                                public BarController(IFooService fooService)
-                                {
-                                    _fooService = fooService;
-                                }
-                            }
-                        </code></pre></span>
-                    </section>
-                    <section>
-                        And then use that variable throughout the class.
-                        <span class="fragment"><pre><code data-trim>
-                            public class BarController : Controller
-                            {
-                                private IFooService _fooService;
-
-                                public BarController(IFooService fooService)
-                                {
-                                    _fooService = fooService;
-                                }
-
-                                public ActionResult Index()
-                                {
-                                    var message = _fooService.SayHello();
-                                    var viewModel = new BarViewModel {Message = message};
-
-                                    return View(viewModel);
-                                }
-                            }
-                        </code></pre></span>
+                        What do Dependency Injection frameworks do for you?
+                        <aside class="notes">
+                            <li>Dependency Injection frameworks do all the heavy lifting for you.</li>
+                            <li>Where you would normally have to go in and new up all of your classes all over the place, DI frameworks do that automatically, based on conventions.</li>
+                            <li>Frameworks make your code more maintainable because you no longer have to new up classes everywhere, thereby creating dependencies. 
+                                They also allow you to write unit tests with ease, because you're now able to pass in a mocked or faked class instead of the real deal.</li>
+                        </aside>
                     </section>
                 </section>
 
                 <section>
                     <section>
-                        And that's it! 
+                        Dependency Injection Frameworks
+                        <aside class="notes">
+                            Let's take a look at some of the most common Dependency Injection frameworks in the .NET world.
+                        </aside>
                     </section>
                     <section>
-                        We've just walked through how to implement <b>Ninject</b>, <b>StructureMap</b>, and <b>Simple Injector</b> in an MVC web application.
+                        <b>Common Dependency Injection Frameworks</b><br /><br />
+                        <span class="fragment">Simple Injector</span><br />
+                        <span class="fragment">StructureMap</span><br />
+                        <span class="fragment">Castle Windsor</span><br />
+                        <span class="fragment">Spring.NET</span><br />
+                        <span class="fragment">Autofac</span><br />
+                        <span class="fragment">Ninject</span><br />
+                        <span class="fragment">Unity</span><br />
+                        <aside class="notes">
+                            These are some of the most common Dependency Injection frameworks in .NET. And we're actually going to be looking into a few of them to see just how they work.
+                        </aside>
                     </section>
                     <section>
-                        There are other ways of configuring each of these containers that you may get into eventually.
+                        <b>The Frameworks</b><br /><br />
+                        <span class="fragment">Ninject</span><br />
+                        <span class="fragment">StructureMap</span><br />
+                        <span class="fragment">Simple Injector</span>
+                        <aside class="notes">
+                            These are the frameworks we will be going through today. We're going to walk through what you need to do to set them up and start using them with your code base.
+                        </aside>
                     </section>
                     <section>
-                        This is just the beginning.
+                        Using a Dependency Injection Framework
+                        <aside class="notes">
+                            So before we get started with specific frameworks, let's establish a basis.<br/>
+                            To use a DI Framework, you have to do two things. You have to configure it, and then you have to use it. Sounds pretty simple, right? That's because it is.
+                        </aside>
+                    </section>
+                </section>
+
+                <!--Ninject-->
+
+                <section>
+                    <section>
+                        <b>Ninject</b>
+                        <aside class="notes">
+                            So let's go ahead and get started with Ninject.
+                        </aside>
+                    </section>
+                    <section>
+                        Add Ninject to your project.<br/>
+                        <span class="fragment">ninject.org</span>
+                        <aside class="notes">
+                            First things first, you'll need to download and add Ninject into your code base. You can find it at ninject.org.
+                        </aside>
+                    </section>
+                    <section>
+                        Configuration
+                        <aside class="notes">
+                            So like I said earlier, the first step to setting up a Dependency Injection framework is configuring it.<br/>
+                            To configure Ninject we need to find the application's entry point and add some code to tell it what to do.
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            public class DependencyInjection : NinjectModule
+                            {
+                                public override void Load()
+                                {
+                                    Bind&lt;IClassA&gt;().To&lt;ClassA&gt;();
+                                }
+                            }
+                        </code></pre>
+                        <aside class="notes">
+                            Once you've located the entry point and added Ninject, this is what you're going to add to your code. It's a new class that you'll be using to register your classes to the DI container. 
+                            Now, inside that class, you'll need to add this method that let's you tell Ninject what to add and to what interfaces.
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            var kernel = new StandardKernel();
+                            kernel.Load(Assembly.GetExecutingAssembly());
+                        </code></pre>
+                        <aside class="notes">
+                            Once you've added that class, you can now add some code directly to the entry point. The code for Ninject looks like this. This basically sets up your container for future use in the application.
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                        var classA = kernel.Get&lt;IClassA&gt;();
+                        </code></pre>
+                        <aside class="notes">
+                            Now, you can easily reach out to the container and grab an instance of any class that has been registered.
+                        </aside>
+                    </section>
+                    <section>
+                        Put It To Use
+                        <aside class="notes">
+                            So that was step one, the configuration. Now, we have to do step two, which we know is to actually use the container. There are a few different Dependency Injection patterns, but one of the most common ones is called Constructor Injection, and that's what we'll be looking at today.
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                        private IClassA _classA;
+                        public ClassA(IClassA classA)
+                        {
+                            _classA = classA;
+                        }
+                        </code></pre>
+                        <aside class="notes">
+                            To make use of constructor injection, we need to add a parameter to the constructor of the class we want to inject the dependency into. We'll also add a global varibale outside of the constructor so we can capture the instance and use it throughout the class.                      
+                        </aside>
+                    </section>
+                    <section>
+                        That's It
+                        <aside class="notes">
+                            That's all there is to setting up Ninject, and it's a pretty similar process for other Dependency Injection frameworks.
+                        </aside>
+                    </section>
+                </section>
+
+                <!--StructureMap-->
+
+                <section>
+                    <section>
+                        <b>StructureMap</b>
+                    </section>
+                </section>
+
+                <!--SimpleInjector-->
+
+                <section>
+                    <section>
+                        <b>Simple Injector</b>        
                     </section>
                 </section>
 
