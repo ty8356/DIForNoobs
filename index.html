@@ -542,7 +542,7 @@
                         </aside>
                     </section>
                     <section>
-                        Add Ninject to your project.<br/>
+                        Add Ninject to your project.<br/><br/>
                         <span class="fragment">ninject.org</span>
                         <aside class="notes">
                             First things first, you'll need to download and add Ninject into your code base. You can find it at ninject.org.
@@ -618,14 +618,145 @@
                 <section>
                     <section>
                         <b>StructureMap</b>
+                        <aside class="notes">
+                            Next up, we'll be taking a look at StructureMap
+                        </aside>
+                    </section>
+                    <section>
+                        Add StructureMap to your project.<br/><br/>
+                        <span class="fragment">structuremap.github.io</span>
+                        <aside class="notes">
+                            First, you'll need to add StructureMap to your project. You can find it at structuremap.github.io.
+                        </aside>
+                    </section>
+                    <section>
+                        Configuration
+                        <aside class="notes">
+                            Just like before, we have to start off with some configuration.
+                            Again, we'll go to our application's entry point and add some code.
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            public class DependencyInjection : Registry
+                            {
+                                public DependencyInjection()
+                                {
+                                    Scan(scan =>
+                                    {
+                                        scan.TheCallingAssembly();
+                                        scan.WithDefaultConventions();
+                                    });
+                                    For&lt;IClassA&gt;().Use&lt;ClassA&gt;();
+                                }
+                            }
+                        </code></pre>
+                        <aside class="notes">
+                            So now we have to add another class again that initializes the container. This is how you would do that.
+                            You can name the class whatever you like, but it has to implement the Registry class.
+                            You can either set it to register classes based on convention, or hard code them below like we've done here.
+                            That's all it takes to configure StructureMap.
+                        </aside>
+                    </section>
+                    <section>
+                        Use It
+                        <aside class="notes">
+                            Once again, it's time to put our framework to use, and in the exact same way. Again, we'll be using constructor injection.
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                        private IClassA _classA;
+                        public ClassA(IClassA classA)
+                        {
+                            _classA = classA;
+                        }
+                        </code></pre>
+                        <aside class="notes">
+                            This shoulld look extremely familiar. It's exactly the same thing we did to use Ninject.
+                        </aside>
+                    </section>
+                    <section>
+                        You're up and running with StructureMap.
                     </section>
                 </section>
 
                 <!--SimpleInjector-->
 
+                <!--<section>
+                    <section>
+                        <b>Simple Injector</b>
+                        <aside class="notes">
+                            And finally, we'll look into Simple Injector.
+                        </aside>
+                    </section>
+                    <section>
+                        Add Simple Injector to your code.<br/><br/>
+                        <span class="fragment">simpleinjector.org</span>
+                        <aside class="notes">
+                            As we've come to know and love, our step 0 is to add the library to your project.
+                        </aside>
+                    </section>
+                    <section>
+                        Configuration
+                        <aside class="notes">
+                            Configuration time... Again...
+                            Head over to the apps entry point.
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            var container = new Container();
+                            container.Register&lt;IClassA, ClassA&gt;(Lifestyle.Singleton);
+                        </code></pre>
+                        <aside class="notes">
+                            SimpleInjector is a little different than the other two we've looked at so far and is really dependent on what kind of application you're using it in. This is really all it takes to configure, but you'll have to store that container for use later.
+                        </aside>
+                    </section>
+                    <section>
+                        Use It
+                        <aside class="notes">
+                            Now, time to put it to use!
+                        </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            var classA = container.GetInstance&lt;IClassA&gt;();
+                            // Use the class here
+                        </code></pre>
+                        <aside class="notes">
+                            You can pull out an instance at any time with this snippet.
+                        </aside>
+                    </section>
+                    <section>
+                        You're done!
+                    </section>
+                </section>-->
+
                 <section>
                     <section>
-                        <b>Simple Injector</b>        
+                        Wrap Up
+                        <aside class="notes">
+                            So that's a look at just how easy it is to set up and use Dependency Injection. Of course it may be a little more complex with certain applications, but overall it's actually really straightforward.
+                        </aside>
+                    </section>
+                    <section>
+                        Let's Review
+                    </section>
+                    <section>
+                        Programming to Interfaces is good.
+                    </section>
+                    <section>
+                        Inversion of Control makes your code more maintainable.
+                    </section>
+                    <section>
+                        Dependency Injection allows you to variably inject whatever you want.
+                    </section>
+                    <section>
+                        Together, this is the definition of 'Dependency Injection' for most developers.
+                    </section>
+                    <section>
+                        The frameworks tie it all together.
                     </section>
                 </section>
 
