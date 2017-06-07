@@ -44,7 +44,7 @@
                             <span class="fragment">.NET based</span>
                             <br/>
                             <br/>
-                            <span class="fragment">Video game enthusiast</span>
+                            <span class="fragment">Game enthusiast</span>
                         </p>
                     </section>
                     <section>
@@ -160,6 +160,25 @@
                         Implementation
                         <span class="fragment"><pre><code data-trim data-noescape>
                             public class Ferrari : ICar
+                            {
+                                public void StartEngine()
+                                {
+                                }
+
+                                public decimal Accelerate()
+                                {
+                                }
+
+                                public int Brake()
+                                {
+                                }
+                            }    
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        Implementation
+                        <span class="fragment"><pre><code data-trim data-noescape>
+                            public class Porsche : ICar
                             {
                                 public void StartEngine()
                                 {
@@ -337,6 +356,12 @@
                         <aside class="notes">
                             On the other side of things, this is what calling that class would look like. We're able to pass through anything that implements the IClassA interface. As you know, this is Dependency Injection.
                         </aside>
+                    </section>
+                    <section>
+                        <pre><code data-trim data-noescape>
+                            var porsche = new Porsche();
+                            var autoRepairShop = new AutoRepairShop(porsche);
+                        </code></pre>
                     </section>
                 </section>
                 
@@ -649,7 +674,7 @@
                         </aside>
                     </section>
                     <section>
-                        That's It
+                        That's it for Ninject
                         <aside class="notes">
                             That's all there is to setting up Ninject, and it's a pretty similar process for other Dependency Injection frameworks.
                         </aside>
@@ -826,7 +851,7 @@
 
                 <section>
                     <section>
-                        Questions
+                        Questions?
                     </section>
                     <section>
                         <b>Twitter:</b> @ty8356<br/>
