@@ -44,7 +44,7 @@
                             <span class="fragment">.NET based</span>
                             <br/>
                             <br/>
-                            <span class="fragment">Game enthusiast</span>
+                            <span class="fragment">Video game enthusiast</span>
                         </p>
                         <aside class="notes">
                             <ul>
@@ -127,7 +127,7 @@
                         <b>Interfaces</b>
                     </section>
                     <section>
-                        Programming to <b>interfaces</b> is good.
+                        Programming to an <b>interface</b> is good.
                         <aside class="notes">
                             <ul>
                                 <li>Good</li>
@@ -161,11 +161,13 @@
                                 int Brake();
                             }    
                         </code></pre></span>
+                        <span class="fragment"><img src="images/aspen.jpg" alt="Interfaces" height=300></span>
                         <aside class="notes">
                             <ul>
                                 <li>Interface keyword</li>
                                 <li>All members defined</li>
                                 <li>Contract</li>
+                                <li>Neature Walk picture</li>
                             </ul>
                         </aside>
                     </section>
@@ -187,6 +189,11 @@
                                 }
                             }    
                         </code></pre></span>
+                        <aside class="notes">
+                            <ul>
+                                <li>Porsche</li>
+                            </ul>
+                        </aside>
                     </section>
                     <section>
                         <pre><code data-trim data-noescape>
@@ -291,7 +298,7 @@
 
                 <section>
                     <section>
-                        A Different Look at DI.
+                        A <b>Different</b> Look at <b>Dependency Injection</b>
                         <aside class="notes">
                             <ul>
                                 <li>DI on a function level</li>
@@ -345,14 +352,14 @@
                         </aside>
                     </section>
                     <section>
-                        <span class="fragment">Without an Interface</span>
+                        <span class="fragment"><b>Without</b> an Interface</span>
                         <pre><code data-trim data-noescape>
                             public AutoRepairShop(Ferrari ferrari)
                             {
                                 // Fix the Ferrari
                             }
                         </code></pre>
-                        <span class="fragment">With an Interface
+                        <span class="fragment"><b>With</b> an Interface
                             <pre><code data-trim data-noescape>
                             public AutoRepairShop(ICar car)
                             {
@@ -377,6 +384,7 @@
                                 <li>Looks the same</li>
                                 <li>Any ICar</li>
                                 <li>Dependency Injection</li>
+                                <li>Porsche</li>
                             </ul>
                         </aside>
                     </section>
@@ -404,7 +412,7 @@
                     </section>
                     <section>
                         <pre><code data-trim data-noescape>
-                            public class AutoRepairShop
+                            public class AutoRepairShop : IAutoRepairShop
                             {
                                 public AutoRepairShop()
                                 {
@@ -412,15 +420,13 @@
                                 }
                             }
                         </code></pre>
-                    </section>
-                    <section>
-                        <pre><code data-trim data-noescape>
+                        <span class="fragment"><pre><code data-trim data-noescape>
                             var autoRepairShop = new AutoRepairShop();
-                        </code></pre>
+                        </code></pre></span>
                     </section>
                     <section>
                         <pre><code data-trim data-noescape>
-                            public class AutoRepairShop
+                            public class AutoRepairShop : IAutoRepairShop
                             {
                                 public AutoRepairShop(ICar car) 
                                 {
@@ -428,16 +434,14 @@
                                 }
                             }
                         </code></pre>
-                    </section>
-                    <section>
-                        <pre><code data-trim data-noescape>
+                        <span class="fragment"><pre><code data-trim data-noescape>
                             var ferrari = new Ferrari();
                             var autoRepairShop = new AutoRepairShop(ferrari);
-                        </code></pre>
+                        </code></pre></span>
                     </section>
                     <section>
                         <pre><code data-trim data-noescape>
-                            public class AutoRepairShop
+                            public class AutoRepairShop : IAutoRepairShop
                             {
                                 public AutoRepairShop(ICar car, IEnumerable&lt;ICurrency&gt; currency) 
                                 {
@@ -445,13 +449,11 @@
                                 }
                             }
                         </code></pre>
-                    </section>
-                    <section>
-                        <pre><code data-trim data-noescape>
+                        <span class="fragment"><pre><code data-trim data-noescape>
                             var ferrari = new Ferrari();
                             var dollars = new List&lt;Dollar&gt;();
                             var autoRepairShop = new AutoRepairShop(ferrari, dollars);
-                        </code></pre>
+                        </code></pre></span>
                     </section>
                     <section>
                         <pre><code data-trim data-noescape>
@@ -483,8 +485,12 @@
                                 <li>Change everywhere</li>
                                 <li>Hard to maintain</li>
                                 <li>Unnecessary</li>
+                                <li>Chair picture</li>
                             </ul>
                         </aside>
+                    </section>
+                    <section>
+                        <img src="images/chair.jpg" alt="Multiple Dependencies" height=400>
                     </section>
                 </section>
                 
@@ -493,7 +499,7 @@
                         <b>The Solution</b>
                     </section>
                     <section>
-                        Don't do it yourself.
+                        <b>Don't</b> do it yourself.
                     </section>
                     <section>
                         Automation
@@ -525,7 +531,7 @@
                         </aside>
                     </section>
                     <section>
-                        How do Dependency Injection frameworks work?
+                        How do Dependency Injection frameworks <b>work</b>?
                     </section>
                     <section>
                         <b>Components</b><br/><br/>
@@ -542,7 +548,7 @@
                         </aside>
                     </section>
                     <section>
-                        What do Dependency Injection frameworks do for you?
+                        What do Dependency Injection frameworks <b>do</b> for you?
                         <aside class="notes">
                             <ul>
                                 <li>Heavy lifting</li>
@@ -555,7 +561,7 @@
 
                 <section>
                     <section>
-                        Dependency Injection Frameworks
+                        <b>Dependency Injection Frameworks</b>
                         <aside class="notes">
                             <ul>
                                 <li>.NET</li>
@@ -625,6 +631,7 @@
                                 public override void Load()
                                 {
                                     Bind&lt;ICar&gt;().To&lt;Ferrari&gt;();
+                                    Bind&lt;IAutoRepairShop&gt;().To&lt;AutoRepairShop&gt;();
                                 }
                             }
                         </code></pre>
@@ -670,7 +677,7 @@
                     </section>
                     <section>
                         <pre><code data-trim data-noescape>
-                        var car = kernel.Get&lt;ICar&gt;();
+                        var autoRepairShop = kernel.Get&lt;IAutoRepairShop&gt;();
                         </code></pre>
                     </section>
                     <section>
@@ -703,6 +710,7 @@
                                         scan.WithDefaultConventions();
                                     });
                                     For&lt;ICar&gt;().Use&lt;Ferrari&gt;();
+                                    For&lt;IAutoRepairShop&gt;().Use&lt;AutoRepairShop&gt;();
                                 }
                             }
                         </code></pre>
@@ -732,7 +740,8 @@
                     </section>
                     <section>
                         <pre><code data-trim data-noescape>
-                            var car = StructureMapDependencyScope.GetInstance&lt;ICar&gt;()
+                            var autoRepairShop = 
+                                StructureMapDependencyScope.GetInstance&lt;IAutoRepairShop&gt;()
                         </code></pre>
                     </section>
                     <section>
@@ -757,6 +766,7 @@
                         <pre><code data-trim data-noescape>
                             var container = new Container();
                             container.Register&lt;ICar, Ferrari&gt;(Lifestyle.Singleton);
+                            container.Register&lt;IAutoRepairShop, AutoRepairShop&gt;(Lifestyle.Singleton);
 
                             DependencyResolver.SetResolver(
                                 new SimpleInjectorDependencyResolver(container));
@@ -786,7 +796,7 @@
                     </section>
                     <section>
                         <pre><code data-trim data-noescape>
-                        var car = container.GetInstance&lt;ICar&gt;();
+                        var autoRepairShop = container.GetInstance&lt;IAutoRepairShop&gt;();
                         </code></pre>
                     </section>
                     <section>
@@ -818,7 +828,7 @@
 
                 <section>
                     <section>
-                        Wrap Up
+                        <b>Wrap Up</b>
                         <aside class="notes">
                             <ul>
                                 <li>That's how easy it is</li>
@@ -830,22 +840,40 @@
                         Let's Review
                     </section>
                     <section>
-                        Programming to Interfaces is good.
+                        Programming to an <b>interface</b> is good.
                     </section>
                     <section>
-                        Inversion of Control and Dependency Injection make your code maintainable.
+                        <b>Inversion of Control</b> and <b>Dependency Injection</b> make your code <b>maintainable</b>.
                     </section>
                     <section>
-                        The frameworks provide automation.
+                        The frameworks provide <b>automation</b>.
+                        <aside class="notes">
+                            <ul>
+                                <li>Side-by-side example</li>
+                            </ul>
+                        </aside>
                     </section>
                     <section>
-                        Together, this is 'Dependency Injection.'
+                        <pre><code data-trim data-noescape>
+                            var carKey = new CarKey();
+                            var gasoline = new Gasoline();
+                            var ferrari = new Ferrari(carKey, gasoline);
+
+                            var dollars = new List&lt;Dollar&gt;();
+                            var autoRepairShop = new AutoRepairShop(ferrari, dollars);
+                        </code></pre>
+                        <span class="fragment"><pre><code data-trim data-noescape>
+                            var autoRepairShop = kernel.Get&lt;IAutoRepairShop&gt;();
+                        </code></pre></span>
+                    </section>
+                    <section>
+                        Together, this is '<b>Dependency Injection</b>.'
                     </section>
                 </section>
 
                 <section>
                     <section>
-                        Questions?
+                        <b>Questions</b>
                     </section>
                     <section>
                         <b>Github Repo:</b> www.github.com/ty8356/DIForNoobs
